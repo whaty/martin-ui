@@ -9,8 +9,9 @@ import ProLayout, {
   Settings,
   DefaultFooter,
   SettingDrawer,
+  RouteContext,
 } from '@ant-design/pro-layout';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'umi/link';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
@@ -21,6 +22,7 @@ import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState } from '@/models/connect';
 import { isAntDesignPro, getAuthorityFromRouter } from '@/utils/utils';
 import logo from '../assets/logo.svg';
+import TabsView from './Components/TabsView';
 const noMatch = (
   <Result
     status="403"
@@ -33,6 +35,11 @@ const noMatch = (
     }
   />
 );
+
+interface MySettings extends Settings {
+  tabsView: boolean;
+}
+
 export interface BasicLayoutProps extends ProLayoutProps {
   breadcrumbNameMap: {
     [path: string]: MenuDataItem;
@@ -40,7 +47,7 @@ export interface BasicLayoutProps extends ProLayoutProps {
   route: ProLayoutProps['route'] & {
     authority: string[];
   };
-  settings: Settings;
+  settings: MySettings;
   dispatch: Dispatch;
 }
 export type BasicLayoutContext = { [K in 'location']: BasicLayoutProps[K] } & {
@@ -114,11 +121,17 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   const {
     dispatch,
     children,
-    settings,
+    settings: defaultSettings,
     location = {
       pathname: '/',
     },
   } = props;
+
+  console.log('children',children);
+
+  // @ts-ignore
+  const [settings, setSettings] = useState<Partial<MySettings>>(defaultSettings);
+  const { tabsView, fixedHeader } = settings;
   /**
    * constructor
    */
@@ -189,9 +202,29 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         {...props}
         {...settings}
       >
-        <Authorized authority={authorized!.authority} noMatch={noMatch}>
-          {children}
-        </Authorized>
+        <div style={{ position: 'relative' }} className="ant-pro-page-content-wrap">
+          {tabsView ? (
+            <RouteContext.Consumer>
+              {value => (
+                <TabsView {...value}>
+                  <div className="ant-pro-page-content-wrap-children-content">
+                    <Authorized authority={authorized!.authority} noMatch={noMatch}>
+                      {children}
+                    </Authorized>
+                  </div>
+                  {
+                    fixedHeader && footerRender()}
+                </TabsView>
+              )}
+            </RouteContext.Consumer>
+          ) : (
+            <div className="ant-pro-page-content-wrap-children-content">
+              <Authorized authority={authorized!.authority} noMatch={noMatch}>
+                {children}
+              </Authorized>
+            </div>
+          )}
+        </div>
       </ProLayout>
       <SettingDrawer
         settings={settings}
@@ -205,8 +238,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     </>
   );
 };
-
+// @ts-ignore
 export default connect(({ global, settings }: ConnectState) => ({
   collapsed: global.collapsed,
   settings,
 }))(BasicLayout);
+

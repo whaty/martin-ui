@@ -44,18 +44,20 @@ export interface DefaultSettings {
 
 export default {
   navTheme: 'dark',
-  // 拂晓蓝
-  primaryColor: 'daybreak',
+  primaryColor: 'dust',
   layout: 'sidemenu',
   contentWidth: 'Fluid',
-  fixedHeader: false,
+  fixedHeader: true,
   autoHideHeader: false,
-  fixSiderbar: false,
+  fixSiderbar: true,
   colorWeak: false,
   menu: {
     locale: true,
   },
-  title: 'Ant Design Pro',
+  title: 'martin',
   pwa: false,
+  "collapse": true,
+  "language": "zh-CN",
   iconfontUrl: '',
+  tabsView: true,
 } as DefaultSettings;
