@@ -207,7 +207,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
             <RouteContext.Consumer>
               {value => (
                 <TabsView {...value}>
-                  <div className="ant-pro-page-content-wrap-children-content">
+                  <div className="ant-pro-page-content-wrap-children-content" style={{ marginTop: 50 }} >
                     <Authorized authority={authorized!.authority} noMatch={noMatch}>
                       {children}
                     </Authorized>
