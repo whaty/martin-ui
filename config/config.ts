@@ -284,6 +284,19 @@ export default {
               ],
             },
             {
+              name: 'site',
+              icon: 'user',
+              path: '/site',
+              routes: [
+                {
+                  name: 'site-config',
+                  icon: 'smile',
+                  path: '/site/site-config',
+                  component: './site/site-config',
+                },
+              ],
+            },
+            {
               name: 'account',
               icon: 'user',
               path: '/account',

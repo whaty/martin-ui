@@ -289,75 +289,73 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     };
     return (
       <>
-        <PageHeaderWrapper>
-          <div className={styles.standardList}>
-            <Card bordered={false}>
-              <Row>
-                <Col sm={8} xs={24}>
-                  <Info title="我的待办" value="8个任务" bordered />
-                </Col>
-                <Col sm={8} xs={24}>
-                  <Info title="本周任务平均处理时间" value="32分钟" bordered />
-                </Col>
-                <Col sm={8} xs={24}>
-                  <Info title="本周完成任务数" value="24个任务" />
-                </Col>
-              </Row>
-            </Card>
+        <div className={styles.standardList}>
+          <Card bordered={false}>
+            <Row>
+              <Col sm={8} xs={24}>
+                <Info title="我的待办" value="8个任务" bordered />
+              </Col>
+              <Col sm={8} xs={24}>
+                <Info title="本周任务平均处理时间" value="32分钟" bordered />
+              </Col>
+              <Col sm={8} xs={24}>
+                <Info title="本周完成任务数" value="24个任务" />
+              </Col>
+            </Row>
+          </Card>
 
-            <Card
-              className={styles.listCard}
-              bordered={false}
-              title="基本列表"
-              style={{ marginTop: 24 }}
-              bodyStyle={{ padding: '0 32px 40px 32px' }}
-              extra={extraContent}
+          <Card
+            className={styles.listCard}
+            bordered={false}
+            title="基本列表"
+            style={{ marginTop: 24 }}
+            bodyStyle={{ padding: '0 32px 40px 32px' }}
+            extra={extraContent}
+          >
+            <Button
+              type="dashed"
+              style={{ width: '100%', marginBottom: 8 }}
+              icon="plus"
+              onClick={this.showModal}
+              ref={component => {
+                // eslint-disable-next-line  react/no-find-dom-node
+                this.addBtn = findDOMNode(component) as HTMLButtonElement;
+              }}
             >
-              <Button
-                type="dashed"
-                style={{ width: '100%', marginBottom: 8 }}
-                icon="plus"
-                onClick={this.showModal}
-                ref={component => {
-                  // eslint-disable-next-line  react/no-find-dom-node
-                  this.addBtn = findDOMNode(component) as HTMLButtonElement;
-                }}
-              >
-                添加
-              </Button>
-              <List
-                size="large"
-                rowKey="id"
-                loading={loading}
-                pagination={paginationProps}
-                dataSource={list}
-                renderItem={item => (
-                  <List.Item
-                    actions={[
-                      <a
-                        key="edit"
-                        onClick={e => {
-                          e.preventDefault();
-                          this.showEditModal(item);
-                        }}
-                      >
-                        编辑
-                      </a>,
-                      <MoreBtn key="more" item={item} />,
-                    ]}
-                  >
-                    <List.Item.Meta
-                      avatar={<Avatar src={item.logo} shape="square" size="large" />}
-                      title={<a href={item.href}>{item.title}</a>}
-                      description={item.subDescription}
-                    />
-                    <ListContent data={item} />
-                  </List.Item>
-                )}
-              />
-            </Card>
-          </div>
-        </PageHeaderWrapper>
+              添加
+            </Button>
+            <List
+              size="large"
+              rowKey="id"
+              loading={loading}
+              pagination={paginationProps}
+              dataSource={list}
+              renderItem={item => (
+                <List.Item
+                  actions={[
+                    <a
+                      key="edit"
+                      onClick={e => {
+                        e.preventDefault();
+                        this.showEditModal(item);
+                      }}
+                    >
+                      编辑
+                    </a>,
+                    <MoreBtn key="more" item={item} />,
+                  ]}
+                >
+                  <List.Item.Meta
+                    avatar={<Avatar src={item.logo} shape="square" size="large" />}
+                    title={<a href={item.href}>{item.title}</a>}
+                    description={item.subDescription}
+                  />
+                  <ListContent data={item} />
+                </List.Item>
+              )}
+            />
+          </Card>
+        </div>
 
         <Modal
           title={done ? null : `任务${current ? '编辑' : '添加'}`}

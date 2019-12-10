@@ -444,7 +444,7 @@ class TableList extends Component<TableListProps, TableListState> {
       handleUpdate: this.handleUpdate,
     };
     return (
-      <PageHeaderWrapper>
+      <div>
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
@@ -481,7 +481,7 @@ class TableList extends Component<TableListProps, TableListState> {
             values={stepFormValues}
           />
         ) : null}
-      </PageHeaderWrapper>
+      </div>
     );
   }
 }
