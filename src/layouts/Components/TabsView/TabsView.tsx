@@ -209,7 +209,7 @@ class TabsView extends React.Component<TabsViewProps, TabsViewState> {
       <span onContextMenu={event => event.preventDefault()}>
         <Dropdown overlay={setMenu(key)} trigger={['contextMenu']}>
           <span>
-            <FormattedMessage id={'menu.'.concat(tab)} />
+            <FormattedMessage id={tab} />
           </span>
         </Dropdown>
       </span>

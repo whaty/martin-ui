@@ -12,11 +12,11 @@ function searchPathIdAndName(childrenPathname: string, originalMenuData: any[]):
     menuData.forEach(item => {
       // match prefix iteratively
       if (pathToRegexp(`${item.path}(.*)`).test(path)) {
-        if (!parent && item.name) {
-          result = [item.path, item.name];
-        } else if (parent && !parent.component && item.name) {
+        if (!parent && item.locale) {
+          result = [item.path, item.locale];
+        } else if (parent && !parent.component && item.locale) {
           // create new tab if item has name and item's parant route has not component
-          result = [item.path, item.name];
+          result = [item.path, item.locale];
         }
         // get children pathIdAndName recursively
         if (item.children) {

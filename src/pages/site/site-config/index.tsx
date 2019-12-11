@@ -12,7 +12,6 @@ import { StandardTableColumnProps } from '@/components/StandardTable';
 import InlinePopconfirmBtn from '@/components/InlinePopconfirmBtn';
 import { ModalForm } from '@/components/Form';
 
-import LoginScriptForm from './components/LoginScriptForm';
 
 import { SiteStateType, SiteListItem } from './model';
 
@@ -37,8 +36,13 @@ class Site extends Component<SiteProps, SiteState> {
   };
 
   private pageRef: RefObject<TablePage<SiteListItem>> = React.createRef();
-
-  columns: StandardTableColumnProps<SiteListItem>[] = [
+/**
+ *
+ *
+ * @type {StandardTableColumnProps<SiteListItem>[]}
+ * @memberof Site
+ */
+columns: StandardTableColumnProps<SiteListItem>[] = [
     {
       title: 'LOGO',
       dataIndex: 'logo',
@@ -133,6 +137,7 @@ class Site extends Component<SiteProps, SiteState> {
       dataIndex: 'defaultCookies',
       width: 100,
     },
+    // 定义最后一列操作按钮
     {
       title: <FormattedMessage id="app.common.label.operation" />,
       align: 'center',
@@ -153,15 +158,6 @@ class Site extends Component<SiteProps, SiteState> {
             formItems={this.modalFormItems}
             formValues={record}
           />
-          <Divider type="vertical" />
-          <a
-            onClick={() => {
-              this.showModal(record);
-            }}
-          >
-            <Icon type="edit" />
-            <FormattedMessage id="app.crawler.site.edit-the-login-script" />
-          </a>
           <Divider type="vertical" />
           <InlinePopconfirmBtn onConfirm={() => this.onDelete([record.id])} />
         </>
@@ -374,19 +370,6 @@ class Site extends Component<SiteProps, SiteState> {
           onDelete={(rows: SiteListItem[]) => this.onDelete(rows.map(row => row.id))}
           dispatch={dispatch}
         />
-        <Modal
-          title="配置登录脚本"
-          visible={showLoginScriptModal}
-          width={500}
-          footer={null}
-          centered
-          destroyOnClose
-          onCancel={() => this.setState({ showLoginScriptModal: false })}
-        >
-          <LoginScriptForm
-            loginJudgeExpression={currentRecord && currentRecord.loginJudgeExpression}
-          />
-        </Modal>
       </>
     );
   }
