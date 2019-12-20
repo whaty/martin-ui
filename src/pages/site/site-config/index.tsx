@@ -142,7 +142,7 @@ columns: StandardTableColumnProps<SiteListItem>[] = [
       title: <FormattedMessage id="app.common.label.operation" />,
       align: 'center',
       key: 'operation',
-      width: 220,
+      width: 120,
       fixed: 'right',
       render: (text: string, record: SiteListItem) => (
         <>

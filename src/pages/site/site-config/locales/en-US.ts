@@ -26,8 +26,7 @@ export default {
   'app.crawler.site.label.cookies': 'Default Cookies',
   'app.crawler.site.label.headers': 'Default Headers',
   'app.crawler.site.label.no-limit': 'No Limit',
-  'app.crawler.site.placeholder.rate-limit':
-    'The number of requests per second.An empty value or value of 0 means no limit',
+  'app.crawler.site.placeholder.rate-limit':'The number of requests per second.An empty value or value of 0 means no limit',
 
   'app.crawler.rule-conf.add-new-rule-conf': 'Add a new crawling page',
   'app.crawler.rule-conf.add-new-page-region': 'Add a new crawling region',
