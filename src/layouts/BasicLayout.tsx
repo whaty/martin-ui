@@ -121,16 +121,14 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   const {
     dispatch,
     children,
-    settings: defaultSettings,
+    settings,
     location = {
       pathname: '/',
     },
   } = props;
 
-  console.log('children',children);
-
   // @ts-ignore
-  const [settings, setSettings] = useState<Partial<MySettings>>(defaultSettings);
+  // const [settings, setSettings] = useState<Partial<MySettings>>(defaultSettings);
   const { tabsView, fixedHeader } = settings;
   /**
    * constructor
@@ -235,6 +233,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
             payload: config,
           })
         }
+        hideHintAlert={true}
       />
     </>
   );

@@ -1,7 +1,6 @@
 import { IConfig, IPlugin } from 'umi-types';
 import defaultSettings from './defaultSettings'; // https://umijs.org/config/
 
-
 import slash from 'slash2';
 import themePluginConfig from './themePluginConfig';
 const { pwa } = defaultSettings; // preview.pro.ant.design only do not use in your production ;
@@ -65,7 +64,7 @@ if (isAntDesignProPreview) {
       code: 'UA-72788897-6',
     },
   ]);
-
+  plugins.push(['umi-plugin-antd-theme', themePluginConfig]);
 }
 
 export default {
@@ -281,19 +280,6 @@ export default {
                   icon: 'smile',
                   path: '/exception/500',
                   component: './exception/500',
-                },
-              ],
-            },
-            {
-              name: 'site',
-              icon: 'user',
-              path: '/site',
-              routes: [
-                {
-                  name: 'site-config',
-                  icon: 'smile',
-                  path: '/site/site-config',
-                  component: './site/site-config',
                 },
               ],
             },
