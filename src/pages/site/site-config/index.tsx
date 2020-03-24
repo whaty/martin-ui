@@ -322,28 +322,52 @@ columns: StandardTableColumnProps<SiteListItem>[] = [
     });
   };
 
+  //配置搜索项
   searchFormRender = (form: WrappedFormUtils) => {
     const { getFieldDecorator } = form;
     return (
-      <Col md={8} sm={24}>
-        <Form.Item label={<FormattedMessage id="app.crawler.site.filter.name" />}>
-          {getFieldDecorator('name')(<Input placeholder="请输入" />)}
-        </Form.Item>
-      </Col>
+      [
+        <Col md={8} sm={24}>
+          <Form.Item label={<FormattedMessage id="app.crawler.site.filter.name" />}>
+            {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+          </Form.Item>
+        </Col>,
+        <Col md={8} sm={24}>
+          <Form.Item label={<FormattedMessage id="app.crawler.site.filter.name" />}>
+            {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+          </Form.Item>
+        </Col>,
+        <Col md={8} sm={24}>
+          <Form.Item label={<FormattedMessage id="app.crawler.site.filter.name" />}>
+            {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+          </Form.Item>
+        </Col>,
+        <Col md={8} sm={24}>
+          <Form.Item label={<FormattedMessage id="app.crawler.site.filter.name" />}>
+            {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+          </Form.Item>
+        </Col>,
+
+      ]
     );
   };
 
+  //配置操作项
   operatorRender = () => (
-    <ModalForm
-      title={formatMessage({ id: 'app.crawler.site.add-new-site' })}
-      onSubmit={this.handleAdd}
-      element={
-        <Button type="primary" icon="plus">
-          <FormattedMessage id="component.common.text.add" />
-        </Button>
-      }
-      formItems={this.modalFormItems}
-    />
+    [
+      <ModalForm
+        title={formatMessage({ id: 'app.crawler.site.add-new-site' })}
+        onSubmit={this.handleAdd}
+        element={
+          <Button type="primary" icon="plus">
+            <FormattedMessage id="component.common.text.add" />
+          </Button>
+        }
+        formItems={this.modalFormItems}
+      />,
+
+    ]
+
   );
 
   render() {

@@ -159,6 +159,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   const authorized = getAuthorityFromRouter(props.route.routes, location.pathname || '/') || {
     authority: undefined,
   };
+  // @ts-ignore
   return (
     <>
       <ProLayout

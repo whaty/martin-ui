@@ -16,9 +16,12 @@ const updateColorWeak: (colorWeak: boolean) => void = colorWeak => {
   }
 };
 
+// @ts-ignore
+const themeData = JSON.parse(localStorage.getItem('smart-theme'));
+
 const SettingModel: SettingModelType = {
   namespace: 'settings',
-  state: defaultSettings,
+  state: themeData || defaultSettings,
   reducers: {
     changeSetting(state = defaultSettings, { payload }) {
       const { colorWeak, contentWidth } = payload;
@@ -27,6 +30,7 @@ const SettingModel: SettingModelType = {
         window.dispatchEvent(new Event('resize'));
       }
       updateColorWeak(!!colorWeak);
+      localStorage.setItem('smart-theme', JSON.stringify({ ...state, ...payload }));
       return {
         ...state,
         ...payload,

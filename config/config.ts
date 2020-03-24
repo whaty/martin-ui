@@ -54,6 +54,7 @@ const plugins: IPlugin[] = [
       autoAddMenu: true,
     },
   ],
+  ['umi-plugin-antd-theme', themePluginConfig],
 ];
 
 if (isAntDesignProPreview) {
@@ -64,7 +65,7 @@ if (isAntDesignProPreview) {
       code: 'UA-72788897-6',
     },
   ]);
-  plugins.push(['umi-plugin-antd-theme', themePluginConfig]);
+
 }
 
 export default {
