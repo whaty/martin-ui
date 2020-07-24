@@ -2,7 +2,7 @@ import request from '@/utils/request';
 import { stringify } from 'qs';
 
 import { TableListParams } from '@/components/Page/TablePage';
-import { SiteListItem } from '@/pages/Crawler/Site/model';
+import { SiteListItem } from '@/pages/site/site-config/model';
 
 export async function query(params: TableListParams) {
   return request(`/api/crawler/sites?${stringify(params)}`);

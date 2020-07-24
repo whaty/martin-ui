@@ -1,12 +1,14 @@
-import { IConfig, IPlugin } from 'umi-types';
+import {IConfig, IPlugin} from 'umi-types';
 import defaultSettings from './defaultSettings'; // https://umijs.org/config/
 
 import slash from 'slash2';
 import themePluginConfig from './themePluginConfig';
-const { pwa } = defaultSettings; // preview.pro.ant.design only do not use in your production ;
+
+const {pwa} = defaultSettings; // preview.pro.ant.design only do not use in your production ;
 // preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
 
-const { ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION } = process.env;
+const {ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION} = process.env;
+//下面选项控制是否渲染多色主题，默认不会渲染，因为渲染主题会导致加载速度变慢
 const isAntDesignProPreview = ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION === 'site';
 const plugins: IPlugin[] = [
   [
@@ -31,11 +33,11 @@ const plugins: IPlugin[] = [
       },
       pwa: pwa
         ? {
-            workboxPluginMode: 'InjectManifest',
-            workboxOptions: {
-              importWorkboxFrom: 'local',
-            },
-          }
+          workboxPluginMode: 'InjectManifest',
+          workboxOptions: {
+            importWorkboxFrom: 'local',
+          },
+        }
         : false, // default close dll, because issue https://github.com/ant-design/ant-design-pro/issues/4665
       // dll features https://webpack.js.org/plugins/dll-plugin/
       // dll: {
@@ -53,7 +55,7 @@ const plugins: IPlugin[] = [
       autoAddMenu: true,
     },
   ],
-  ['umi-plugin-antd-theme', themePluginConfig],
+  // ['umi-plugin-antd-theme', themePluginConfig],
 ];
 
 if (isAntDesignProPreview) {
@@ -114,7 +116,6 @@ export default {
           path: '/',
           component: '../layouts/BasicLayout',
           Routes: ['src/pages/Authorized'],
-          authority: ['admin', 'user'],
           routes: [
             {
               path: '/dashboard',
@@ -284,6 +285,38 @@ export default {
               ],
             },
             {
+              name: 'site',
+              icon: 'user',
+              path: '/site',
+              routes: [
+                {
+                  name: 'site-config',
+                  icon: 'smile',
+                  path: '/site/site-config',
+                  component: './site/site-config',
+                },
+              ],
+            },
+            // {
+            //   name: 'system',
+            //   icon: 'user',
+            //   path: '/system',
+            //   routes: [
+            //     {
+            //       name: 'menu',
+            //       icon: 'smile',
+            //       path: '/system/menu',
+            //       component: './system/menu',
+            //     },
+            //              {
+            //       name: 'role',
+            //       icon: 'smile',
+            //       path: '/system/role',
+            //       component: './system/role',
+            //     },
+            //   ],
+            // },
+            {
               name: 'account',
               icon: 'user',
               path: '/account',
@@ -330,7 +363,6 @@ export default {
             {
               path: '/',
               redirect: '/dashboard/analysis',
-              authority: ['admin', 'user'],
             },
             {
               component: '404',
@@ -387,11 +419,16 @@ export default {
   manifest: {
     basePath: '/',
   }, // chainWebpack: webpackPlugin,
-  // proxy: {
-  //   '/server/api/': {
-  //     target: 'https://preview.pro.ant.design/',
-  //     changeOrigin: true,
-  //     pathRewrite: { '^/server': '' },
-  //   },
-  // },
+  proxy: {
+    '/auth': {
+      target: 'http://localhost:9502/',
+      changeOrigin: true,
+      pathRewrite: { '^/': '' },
+    },
+    '/system': {
+      target: 'http://localhost:9502/',
+      changeOrigin: true,
+      pathRewrite: { '^/': '' },
+    },
+  },
 } as IConfig;

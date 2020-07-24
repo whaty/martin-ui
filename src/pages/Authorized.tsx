@@ -3,6 +3,7 @@ import Redirect from 'umi/redirect';
 import { connect } from 'dva';
 import pathToRegexp from 'path-to-regexp';
 import Authorized from '@/utils/Authorized';
+import { getAuthority } from '@/utils/authority';
 import { ConnectProps, ConnectState, Route, UserModelState } from '@/models/connect';
 
 interface AuthComponentProps extends ConnectProps {
@@ -10,11 +11,8 @@ interface AuthComponentProps extends ConnectProps {
 }
 
 const getRouteAuthority = (path: string, routeData: Route[]) => {
-  let authorities: string[] | string | undefined;
+  let authorities = getAuthority();
   routeData.forEach(route => {
-    if (route.authority) {
-      authorities = route.authority;
-    }
     // match prefix
     if (pathToRegexp(`${route.path}(.*)`).test(path)) {
       // exact match
@@ -55,4 +53,5 @@ const AuthComponent: React.FC<AuthComponentProps> = ({
 
 export default connect(({ user }: ConnectState) => ({
   user,
+// @ts-ignore
 }))(AuthComponent);

@@ -65,4 +65,5 @@ const UserLayout: React.SFC<UserLayoutProps> = props => {
 
 export default connect(({ settings }: ConnectState) => ({
   ...settings,
+  // @ts-ignore
 }))(UserLayout);

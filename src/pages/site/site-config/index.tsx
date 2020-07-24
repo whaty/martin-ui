@@ -1,21 +1,21 @@
-import { Button, Col, Divider, Form, Icon, Input, Modal, message, Tag } from 'antd';
-import React, { Component, RefObject } from 'react';
+import {Button, Col, Divider, Form, Icon, Input, message, Tag} from 'antd';
+import React, {Component, RefObject} from 'react';
 
-import { Dispatch } from 'redux';
-import { connect } from 'dva';
+import {Dispatch} from 'redux';
+import {connect} from 'dva';
 
-import { WrappedFormUtils } from 'antd/es/form/Form';
-import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
+import {WrappedFormUtils} from 'antd/es/form/Form';
+import {formatMessage, FormattedMessage} from 'umi-plugin-react/locale';
 
-import { TablePage } from '@/components/Page';
-import { StandardTableColumnProps } from '@/components/StandardTable';
+import {TablePage} from '@/components/Page';
+import {StandardTableColumnProps} from '@/components/StandardTable';
 import InlinePopconfirmBtn from '@/components/InlinePopconfirmBtn';
-import { ModalForm } from '@/components/Form';
+import {ModalForm} from '@/components/Form';
 
 
-import { SiteStateType, SiteListItem } from './model';
+import {SiteListItem, SiteStateType} from './model';
 
-import { openWindow } from '@/utils/utils';
+import {openWindow} from '@/utils/utils';
 
 interface SiteProps {
   dispatch: Dispatch<any>;
@@ -36,21 +36,21 @@ class Site extends Component<SiteProps, SiteState> {
   };
 
   private pageRef: RefObject<TablePage<SiteListItem>> = React.createRef();
-/**
- *
- *
- * @type {StandardTableColumnProps<SiteListItem>[]}
- * @memberof Site
- */
-columns: StandardTableColumnProps<SiteListItem>[] = [
+  /**
+   *
+   *
+   * @type {StandardTableColumnProps<SiteListItem>[]}
+   * @memberof Site
+   */
+  columns: StandardTableColumnProps<SiteListItem>[] = [
     {
       title: 'LOGO',
       dataIndex: 'logo',
       render: (text: string, record: SiteListItem) => {
         if (text) {
           return (
-            <div style={{ height: 50 }}>
-              <img src={text} style={{ height: '100%' }} alt={record.name} />
+            <div style={{height: 50}}>
+              <img src={text} style={{height: '100%'}} alt={record.name}/>
             </div>
           );
         }
@@ -59,24 +59,24 @@ columns: StandardTableColumnProps<SiteListItem>[] = [
       width: 120,
     },
     {
-      title: <FormattedMessage id="app.crawler.site.label.name" />,
+      title: <FormattedMessage id="app.site.label.name"/>,
       dataIndex: 'name',
       width: 100,
     },
     {
-      title: <FormattedMessage id="app.crawler.site.label.short-name" />,
+      title: <FormattedMessage id="app.site.label.short-name"/>,
       dataIndex: 'shortName',
       width: 100,
     },
     {
-      title: <FormattedMessage id="app.crawler.site.label.home-page" />,
+      title: <FormattedMessage id="app.site.label.home-page"/>,
       dataIndex: 'homePage',
       render: text => (
         <a
           href={text}
           target="_blank"
           rel="noreferrer noopener"
-          title={formatMessage({ id: 'app.common.label.open-in-new-window' })}
+          title={formatMessage({id: 'app.common.label.open-in-new-window'})}
           onClick={(e: React.MouseEvent<HTMLElement>) => {
             e.preventDefault();
             openWindow(text);
@@ -88,18 +88,18 @@ columns: StandardTableColumnProps<SiteListItem>[] = [
       width: 250,
     },
     {
-      title: <FormattedMessage id="app.crawler.site.label.timeout" />,
+      title: <FormattedMessage id="app.site.label.timeout"/>,
       dataIndex: 'timeOut',
       width: 100,
     },
     {
-      title: <FormattedMessage id="app.crawler.site.label.rate-limit" />,
+      title: <FormattedMessage id="app.site.label.rate-limit"/>,
       dataIndex: 'rateLimit',
       render: text => {
         if (typeof text === 'undefined') {
           return (
             <Tag color="green">
-              <FormattedMessage id="app.crawler.site.label.no-limit" />
+              <FormattedMessage id="app.site.label.no-limit"/>
             </Tag>
           );
         }
@@ -108,17 +108,17 @@ columns: StandardTableColumnProps<SiteListItem>[] = [
       width: 100,
     },
     {
-      title: <FormattedMessage id="app.crawler.site.label.retry-times" />,
+      title: <FormattedMessage id="app.site.label.retry-times"/>,
       dataIndex: 'retryTimes',
       width: 100,
     },
     {
-      title: <FormattedMessage id="app.crawler.site.label.cycle-retry-times" />,
+      title: <FormattedMessage id="app.site.label.cycle-retry-times"/>,
       dataIndex: 'cycleRetryTimes',
       width: 100,
     },
     {
-      title: <FormattedMessage id="app.crawler.site.label.charset" />,
+      title: <FormattedMessage id="app.site.label.charset"/>,
       dataIndex: 'charset',
       width: 100,
     },
@@ -128,18 +128,18 @@ columns: StandardTableColumnProps<SiteListItem>[] = [
       width: 100,
     },
     {
-      title: <FormattedMessage id="app.crawler.site.label.headers" />,
+      title: <FormattedMessage id="app.site.label.headers"/>,
       dataIndex: 'headers',
       width: 100,
     },
     {
-      title: <FormattedMessage id="app.crawler.site.label.cookies" />,
+      title: <FormattedMessage id="app.site.label.cookies"/>,
       dataIndex: 'defaultCookies',
       width: 100,
     },
     // 定义最后一列操作按钮
     {
-      title: <FormattedMessage id="app.common.label.operation" />,
+      title: <FormattedMessage id="app.common.label.operation"/>,
       align: 'center',
       key: 'operation',
       width: 120,
@@ -147,19 +147,19 @@ columns: StandardTableColumnProps<SiteListItem>[] = [
       render: (text: string, record: SiteListItem) => (
         <>
           <ModalForm
-            title={formatMessage({ id: 'app.crawler.site.edit-the-site' })}
+            title={formatMessage({id: 'app.site.edit-the-site'})}
             onSubmit={this.handleEdit}
             element={
               <a>
-                <Icon type="edit" />
-                <FormattedMessage id="component.common.text.edit" />
+                <Icon type="edit"/>
+                <FormattedMessage id="component.common.text.edit"/>
               </a>
             }
             formItems={this.modalFormItems}
             formValues={record}
           />
-          <Divider type="vertical" />
-          <InlinePopconfirmBtn onConfirm={() => this.onDelete([record.id])} />
+          <Divider type="vertical"/>
+          <InlinePopconfirmBtn onConfirm={() => this.onDelete([record.id])}/>
         </>
       ),
     },
@@ -167,13 +167,15 @@ columns: StandardTableColumnProps<SiteListItem>[] = [
 
   modalFormItems = () => [
     {
+      key: 'id',
       label: 'id',
       name: 'id',
-      itemRender: <Input type="hidden" />,
+      itemRender: <Input type="hidden"/>,
       hidden: true,
     },
     {
-      label: <FormattedMessage id="app.crawler.site.label.home-page" />,
+      key: 'homePage',
+      label: <FormattedMessage id="app.site.label.home-page"/>,
       name: 'homePage',
       rules: [
         {
@@ -185,10 +187,11 @@ columns: StandardTableColumnProps<SiteListItem>[] = [
           message: '请输入正确的链接地址!',
         },
       ],
-      itemRender: <Input placeholder="首页链接" />,
+      itemRender: <Input placeholder="首页链接"/>,
     },
     {
-      label: <FormattedMessage id="app.crawler.site.label.name" />,
+      key: 'name',
+      label: <FormattedMessage id="app.site.label.name"/>,
       name: 'name',
       rules: [
         {
@@ -196,72 +199,82 @@ columns: StandardTableColumnProps<SiteListItem>[] = [
           message: '站点名称不能为空',
         },
       ],
-      itemRender: <Input placeholder="请输入站点全称" />,
+      itemRender: <Input placeholder="请输入站点全称"/>,
     },
     {
-      label: <FormattedMessage id="app.crawler.site.label.short-name" />,
+      key: 'shortName',
+      label: <FormattedMessage id="app.site.label.short-name"/>,
       name: 'shortName',
-      itemRender: <Input placeholder="请输入站点简称" />,
+      itemRender: <Input placeholder="请输入站点简称"/>,
     },
     {
+      key: 'logo',
       label: 'LOGO',
       name: 'logo',
-      itemRender: <Input placeholder="请输入LOGO链接地址" />,
+      itemRender: <Input placeholder="请输入LOGO链接地址"/>,
     },
     {
-      label: <FormattedMessage id="app.crawler.site.label.timeout" />,
+      key: 'timeOut',
+      label: <FormattedMessage id="app.site.label.timeout"/>,
       name: 'timeOut',
-      itemRender: <Input placeholder="超时时间，单位s(秒)" />,
+      itemRender: <Input placeholder="超时时间，单位s(秒)"/>,
       toggleField: true,
     },
     {
-      label: <FormattedMessage id="app.crawler.site.label.charset" />,
+      key: 'charset',
+      label: <FormattedMessage id="app.site.label.charset"/>,
       name: 'charset',
-      itemRender: <Input placeholder="请输入字符编码" />,
+      itemRender: <Input placeholder="请输入字符编码"/>,
       toggleField: true,
     },
     {
-      label: <FormattedMessage id="app.crawler.site.label.retry-times" />,
+      key: 'retryTimes',
+      label: <FormattedMessage id="app.site.label.retry-times"/>,
       name: 'retryTimes',
-      itemRender: <Input placeholder="请输入重试次数" />,
+      itemRender: <Input placeholder="请输入重试次数"/>,
       toggleField: true,
     },
     {
-      label: <FormattedMessage id="app.crawler.site.label.cycle-retry-times" />,
+      key: 'cycleRetryTimes',
+      label: <FormattedMessage id="app.site.label.cycle-retry-times"/>,
       name: 'cycleRetryTimes',
-      itemRender: <Input placeholder="请输入循环重试次数" />,
+      itemRender: <Input placeholder="请输入循环重试次数"/>,
       toggleField: true,
     },
     {
-      label: <FormattedMessage id="app.crawler.site.label.rate-limit" />,
+      key: 'rateLimit',
+      label: <FormattedMessage id="app.site.label.rate-limit"/>,
       name: 'rateLimit',
       itemRender: (
-        <Input placeholder={formatMessage({ id: 'app.crawler.site.placeholder.rate-limit' })} />
+        <Input placeholder={formatMessage({id: 'app.site.placeholder.rate-limit'})}/>
       ),
       toggleField: true,
     },
     {
+      key: 'userAgent',
       label: 'UserAgent',
       name: 'userAgent',
-      itemRender: <Input.TextArea placeholder="请输入UserAgent" style={{ minHeight: 100 }} />,
+      itemRender: <Input.TextArea placeholder="请输入UserAgent" style={{minHeight: 100}}/>,
       toggleField: true,
     },
     {
-      label: <FormattedMessage id="app.crawler.site.label.headers" />,
+      key: 'headers',
+      label: <FormattedMessage id="app.site.label.headers"/>,
       name: 'headers',
-      itemRender: <Input.TextArea placeholder="请输入Headers" style={{ minHeight: 150 }} />,
+      itemRender: <Input.TextArea placeholder="请输入Headers" style={{minHeight: 150}}/>,
       toggleField: true,
     },
     {
-      label: <FormattedMessage id="app.crawler.site.label.cookies" />,
+      key: 'defaultCookies',
+      label: <FormattedMessage id="app.site.label.cookies"/>,
       name: 'defaultCookies',
-      itemRender: <Input.TextArea placeholder="请输入默认Cookies" style={{ minHeight: 100 }} />,
+      itemRender: <Input.TextArea placeholder="请输入默认Cookies" style={{minHeight: 100}}/>,
       toggleField: true,
     },
   ];
 
   showModal = (currentRecord: SiteListItem) => {
-    this.setState({ showLoginScriptModal: true, currentRecord });
+    this.setState({showLoginScriptModal: true, currentRecord});
   };
 
   /**
@@ -269,8 +282,8 @@ columns: StandardTableColumnProps<SiteListItem>[] = [
    * @param ids
    */
   onDelete = (ids: string[]) => {
-    const { dispatch } = this.props;
-    const { selectedRows } = this.state;
+    const {dispatch} = this.props;
+    const {selectedRows} = this.state;
 
     if (!ids) return;
     const that = this;
@@ -280,7 +293,7 @@ columns: StandardTableColumnProps<SiteListItem>[] = [
         ids: ids.join(','),
       },
     })
-      // @ts-ignore
+    // @ts-ignore
       .then(() => {
         that.setState({
           selectedRows: selectedRows.filter(item => ids.indexOf(item.id) === -1),
@@ -288,9 +301,10 @@ columns: StandardTableColumnProps<SiteListItem>[] = [
         if (that.pageRef.current) {
           that.pageRef.current.doSearch();
         }
-        message.success(formatMessage({ id: 'component.common.text.deleted-success' }));
+        message.success(formatMessage({id: 'component.common.text.deleted-success'}));
       })
-      .catch(() => {});
+      .catch(() => {
+      });
   };
 
   handleAdd = (fields: any) => this.handleAddOrEdit('site/create', fields);
@@ -298,7 +312,7 @@ columns: StandardTableColumnProps<SiteListItem>[] = [
   handleEdit = (fields: any) => this.handleAddOrEdit('site/modify', fields);
 
   handleAddOrEdit = (type: string, fields: any) => {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
     const that = this;
     return dispatch({
       type,
@@ -324,27 +338,27 @@ columns: StandardTableColumnProps<SiteListItem>[] = [
 
   //配置搜索项
   searchFormRender = (form: WrappedFormUtils) => {
-    const { getFieldDecorator } = form;
+    const {getFieldDecorator} = form;
     return (
       [
         <Col md={8} sm={24}>
-          <Form.Item label={<FormattedMessage id="app.crawler.site.filter.name" />}>
-            {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+          <Form.Item label={<FormattedMessage id="app.site.filter.name"/>}>
+            {getFieldDecorator('name')(<Input placeholder="请输入"/>)}
           </Form.Item>
         </Col>,
         <Col md={8} sm={24}>
-          <Form.Item label={<FormattedMessage id="app.crawler.site.filter.name" />}>
-            {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+          <Form.Item label={<FormattedMessage id="app.site.filter.name"/>}>
+            {getFieldDecorator('name')(<Input placeholder="请输入"/>)}
           </Form.Item>
         </Col>,
         <Col md={8} sm={24}>
-          <Form.Item label={<FormattedMessage id="app.crawler.site.filter.name" />}>
-            {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+          <Form.Item label={<FormattedMessage id="app.site.filter.name"/>}>
+            {getFieldDecorator('name')(<Input placeholder="请输入"/>)}
           </Form.Item>
         </Col>,
         <Col md={8} sm={24}>
-          <Form.Item label={<FormattedMessage id="app.crawler.site.filter.name" />}>
-            {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+          <Form.Item label={<FormattedMessage id="app.site.filter.name"/>}>
+            {getFieldDecorator('name')(<Input placeholder="请输入"/>)}
           </Form.Item>
         </Col>,
 
@@ -356,11 +370,11 @@ columns: StandardTableColumnProps<SiteListItem>[] = [
   operatorRender = () => (
     [
       <ModalForm
-        title={formatMessage({ id: 'app.crawler.site.add-new-site' })}
+        title={formatMessage({id: 'app.site.add-new-site'})}
         onSubmit={this.handleAdd}
         element={
           <Button type="primary" icon="plus">
-            <FormattedMessage id="component.common.text.add" />
+            <FormattedMessage id="component.common.text.add"/>
           </Button>
         }
         formItems={this.modalFormItems}
@@ -374,15 +388,15 @@ columns: StandardTableColumnProps<SiteListItem>[] = [
     const {
       dispatch,
       loading,
-      site: { data },
+      site: {data},
     } = this.props;
-    const { selectedRows, showLoginScriptModal, currentRecord } = this.state;
+    const {selectedRows} = this.state;
 
     return (
       <>
         <TablePage<SiteListItem>
           ref={this.pageRef}
-          title={formatMessage({ id: 'menu.site' })}
+          title={formatMessage({id: 'menu.site'})}
           action="site/fetch"
           columns={this.columns}
           data={data}
@@ -401,9 +415,9 @@ columns: StandardTableColumnProps<SiteListItem>[] = [
 
 export default connect(
   ({
-    site,
-    loading,
-  }: {
+     site,
+     loading,
+   }: {
     site: SiteStateType;
     loading: {
       models: {

@@ -11,18 +11,19 @@ import ProLayout, {
   SettingDrawer,
   RouteContext,
 } from '@ant-design/pro-layout';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect,} from 'react';
 import Link from 'umi/link';
-import { Dispatch } from 'redux';
-import { connect } from 'dva';
-import { Icon, Result, Button } from 'antd';
-import { formatMessage } from 'umi-plugin-react/locale';
+import {Dispatch} from 'redux';
+import {connect} from 'dva';
+import {Icon, Result, Button} from 'antd';
+import {formatMessage} from 'umi-plugin-react/locale';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
-import { ConnectState } from '@/models/connect';
-import { isAntDesignPro, getAuthorityFromRouter } from '@/utils/utils';
+import {ConnectState} from '@/models/connect';
+import {isAntDesignPro, getAuthorityFromRouter} from '@/utils/utils';
 import logo from '../assets/logo.svg';
 import TabsView from './Components/TabsView';
+
 const noMatch = (
   <Result
     status="403"
@@ -50,6 +51,7 @@ export interface BasicLayoutProps extends ProLayoutProps {
   settings: MySettings;
   dispatch: Dispatch;
 }
+
 export type BasicLayoutContext = { [K in 'location']: BasicLayoutProps[K] } & {
   breadcrumbNameMap: {
     [path: string]: MenuDataItem;
@@ -61,10 +63,10 @@ export type BasicLayoutContext = { [K in 'location']: BasicLayoutProps[K] } & {
 
 const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] =>
   menuList.map(item => {
-    const localItem = { ...item, children: item.children ? menuDataRender(item.children) : [] };
+    // console.log('menuList',JSON.stringify(menuList));
+    const localItem = {...item, children: item.children ? menuDataRender(item.children) : []};
     return Authorized.check(item.authority, localItem, null) as MenuDataItem;
   });
-
 const defaultFooterDom = (
   <DefaultFooter
     copyright="2019 蚂蚁金服体验技术部出品"
@@ -77,7 +79,7 @@ const defaultFooterDom = (
       },
       {
         key: 'github',
-        title: <Icon type="github" />,
+        title: <Icon type="github"/>,
         href: 'https://github.com/ant-design/ant-design-pro',
         blankTarget: true,
       },
@@ -118,18 +120,11 @@ const footerRender: BasicLayoutProps['footerRender'] = () => {
 };
 
 const BasicLayout: React.FC<BasicLayoutProps> = props => {
-  const {
-    dispatch,
-    children,
-    settings,
-    location = {
-      pathname: '/',
-    },
-  } = props;
+  // @ts-ignore
+  const {dispatch, children, settings, menus, location = {pathname: '/',},} = props;
 
   // @ts-ignore
-  // const [settings, setSettings] = useState<Partial<MySettings>>(defaultSettings);
-  const { tabsView, fixedHeader } = settings;
+  const {tabsView, fixedHeader} = settings;
   /**
    * constructor
    */
@@ -138,6 +133,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     if (dispatch) {
       dispatch({
         type: 'user/fetchCurrent',
+      });
+      dispatch({
+        type: 'menu/fetchMenus',
       });
     }
   }, []);
@@ -154,6 +152,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     }
   }; // get children authority
 
+  // @ts-ignore
   const authorized = getAuthorityFromRouter(props.route.routes, location.pathname || '/') || {
     authority: undefined,
   };
@@ -174,6 +173,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
             return defaultDom;
           }
 
+          // @ts-ignore
           return <Link to={menuItemProps.path}>{defaultDom}</Link>;
         }}
         breadcrumbRender={(routers = []) => [
@@ -195,24 +195,25 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
           );
         }}
         // footerRender={footerRender}
-        menuDataRender={menuDataRender}
+        // menuDataRender={menuDataRender}
+        menuDataRender={() => menus}
         formatMessage={formatMessage}
         rightContentRender={rightProps => <RightContent {...rightProps} />}
         {...props}
         {...settings}
       >
-        <div style={{ position: 'relative' }} className="ant-pro-page-content-wrap">
+        <div style={{position: 'relative'}} className="ant-pro-page-content-wrap">
           {tabsView ? (
             <RouteContext.Consumer>
               {value => (
                 <TabsView {...value}>
-                  <div className="ant-pro-page-content-wrap-children-content" style={{ marginTop: 50 }} >
+                  <div className="ant-pro-page-content-wrap-children-content" style={{marginTop: 50}}>
                     <Authorized authority={authorized!.authority} noMatch={noMatch}>
                       {children}
                     </Authorized>
                   </div>
                   {
-                    fixedHeader && footerRender()}
+                    fixedHeader && footerRender}
                 </TabsView>
               )}
             </RouteContext.Consumer>
@@ -238,9 +239,12 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     </>
   );
 };
+
 // @ts-ignore
-export default connect(({ global, settings }: ConnectState) => ({
+export default connect(({global, settings, menu}: ConnectState) => ({
   collapsed: global.collapsed,
   settings,
+  menus: menu.menus,
+  // @ts-ignore
 }))(BasicLayout);
 

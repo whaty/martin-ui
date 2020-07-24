@@ -1,4 +1,4 @@
-import { parse } from 'querystring';
+import {parse} from 'querystring';
 import pathRegexp from 'path-to-regexp';
 
 /* eslint no-useless-escape:0 import/prefer-default-export:0 */
@@ -15,7 +15,7 @@ export const isAntDesignPro = (): boolean => {
 
 // 给官方演示站点用，用于关闭真实开发环境不需要使用的特性
 export const isAntDesignProOrDev = (): boolean => {
-  const { NODE_ENV } = process.env;
+  const {NODE_ENV} = process.env;
   if (NODE_ENV === 'development') {
     return true;
   }
@@ -23,6 +23,8 @@ export const isAntDesignProOrDev = (): boolean => {
 };
 
 export const getPageQuery = () => parse(window.location.href.split('?')[1]);
+
+export const openWindow = (path: string) => {window.open(path)};
 
 /**
  * props.route.routes
@@ -33,7 +35,7 @@ export const getAuthorityFromRouter = <T extends { path: string }>(
   router: T[] = [],
   pathname: string,
 ): T | undefined => {
-  const authority = router.find(({ path }) => path && pathRegexp(path).exec(pathname));
+  const authority = router.find(({path}) => path && pathRegexp(path).exec(pathname));
   if (authority) return authority;
   return undefined;
 };
