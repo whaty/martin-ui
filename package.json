@@ -47,6 +47,7 @@
     "not ie <= 10"
   ],
   "dependencies": {
+    "@ant-design/icons": "^4.2.1",
     "@ant-design/pro-layout": "^4.8.7",
     "@antv/data-set": "^0.10.2",
     "@types/lodash.debounce": "^4.0.6",

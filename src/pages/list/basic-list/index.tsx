@@ -13,20 +13,19 @@ import {
   Modal,
   Progress,
   Radio,
+  Result,
   Row,
   Select,
-  Result,
 } from 'antd';
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
-import { Dispatch } from 'redux';
-import { FormComponentProps } from 'antd/es/form';
-import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { connect } from 'dva';
-import { findDOMNode } from 'react-dom';
+import {Dispatch} from 'redux';
+import {FormComponentProps} from 'antd/es/form';
+import {connect} from 'dva';
+import {findDOMNode} from 'react-dom';
 import moment from 'moment';
-import { StateType } from './model';
-import { BasicListItemDataType } from './data.d';
+import {StateType} from './model';
+import {BasicListItemDataType} from './data.d';
 import styles from './style.less';
 
 const FormItem = Form.Item;
@@ -45,6 +44,7 @@ interface BasicListState {
   done: boolean;
   current?: Partial<BasicListItemDataType>;
 }
+//@ts-ignore
 @connect(
   ({
     listAndbasicList,

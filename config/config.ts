@@ -297,25 +297,19 @@ export default {
                 },
               ],
             },
-            // {
-            //   name: 'system',
-            //   icon: 'user',
-            //   path: '/system',
-            //   routes: [
-            //     {
-            //       name: 'menu',
-            //       icon: 'smile',
-            //       path: '/system/menu',
-            //       component: './system/menu',
-            //     },
-            //              {
-            //       name: 'role',
-            //       icon: 'smile',
-            //       path: '/system/role',
-            //       component: './system/role',
-            //     },
-            //   ],
-            // },
+            {
+              name: 'system',
+              icon: 'smile',
+              path: '/system',
+              routes: [
+                {
+                  name: 'user',
+                  icon: 'smile',
+                  path: '/system/user',
+                  component: './system/user',
+                },
+              ],
+            },
             {
               name: 'account',
               icon: 'user',
@@ -420,15 +414,7 @@ export default {
     basePath: '/',
   }, // chainWebpack: webpackPlugin,
   proxy: {
-    '/auth': {
-      target: 'http://localhost:9502/',
-      changeOrigin: true,
-      pathRewrite: { '^/': '' },
-    },
-    '/system': {
-      target: 'http://localhost:9502/',
-      changeOrigin: true,
-      pathRewrite: { '^/': '' },
-    },
+    '/auth/': 'http://localhost:9502/',
+    '/syst/': 'http://localhost:9502/',
   },
 } as IConfig;

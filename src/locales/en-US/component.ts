@@ -8,6 +8,7 @@ export default {
   'component.common.text.detail': 'Detail',
   'component.common.text.duplicate': 'Duplicate',
   'component.common.text.refresh': 'Refresh',
+  'component.common.text.filter': 'Filter',
   'component.common.text.save': 'Save',
   'component.common.text.cancel': 'Cancel',
   'component.common.text.delete-items': 'Are you sure you want to delete the {count} items?',

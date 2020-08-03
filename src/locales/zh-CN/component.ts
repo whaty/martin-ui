@@ -7,6 +7,7 @@ export default {
   'component.common.text.detail': '详情',
   'component.common.text.duplicate': '复制',
   'component.common.text.refresh': '刷新',
+  'component.common.text.filter': '过滤',
   'component.common.text.save': '保存',
   'component.common.text.cancel': '取消',
   'component.common.text.delete-items': '确定要删除这 {count} 项数据么？',

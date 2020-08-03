@@ -220,6 +220,10 @@ class StandardTable<T extends TableListItem> extends Component<
           components={components}
           columns={wrappedColumns}
           onChange={this.handleTableChange}
+          //@ts-ignore
+          rowClassName={(record, idx) => {
+                if(idx % 2 === 1){return 'bg-row';}
+            }}
           {...rest}
         />
       </div>

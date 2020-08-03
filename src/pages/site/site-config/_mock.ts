@@ -8,7 +8,7 @@ const tableListDataSource: SiteListItem[] = [
     id: '911527780227661826',
     homePage: 'https://www.jianshu.com/u/53671b43e905',
     logo: 'https://favicons.githubusercontent.com/jianshu.com',
-    name: 'Jianshu（简书）',
+    name: 'Jianshu（简书）Jianshu（简书）Jianshu（简书）Jianshu（简书）Jianshu（简书）Jianshu（简书）',
     shortName: '',
     domain: 'www.jianshu.com',
     charset: 'utf8',

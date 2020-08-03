@@ -9,7 +9,7 @@ export async function fakeAccountLogin(params: FormDataType) {
 }
 
 export async function getAuthority() {
-  return request('/system/user/authorities');
+  return request('/syst/user/authorities');
 }
 
 

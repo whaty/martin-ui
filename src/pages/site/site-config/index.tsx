@@ -1,4 +1,4 @@
-import {Button, Col, Divider, Form, Icon, Input, message, Tag} from 'antd';
+import {Button, Col, Divider, Form, Icon, Input, message, Tag, Tooltip} from 'antd';
 import React, {Component, RefObject} from 'react';
 
 import {Dispatch} from 'redux';
@@ -61,7 +61,17 @@ class Site extends Component<SiteProps, SiteState> {
     {
       title: <FormattedMessage id="app.site.label.name"/>,
       dataIndex: 'name',
-      width: 100,
+      key: 'name',
+      render: (text) => <Tooltip placement="topLeft" title={text}>
+        <div style={{
+          maxWidth: '100px',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis'
+        }}>
+          {text}
+        </div>
+      </Tooltip>
     },
     {
       title: <FormattedMessage id="app.site.label.short-name"/>,
@@ -82,7 +92,16 @@ class Site extends Component<SiteProps, SiteState> {
             openWindow(text);
           }}
         >
-          {text}
+          <Tooltip placement="topLeft" title={text}>
+            <div style={{
+              maxWidth: '150px',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis'
+            }}>
+              {text}
+            </div>
+          </Tooltip>
         </a>
       ),
       width: 250,

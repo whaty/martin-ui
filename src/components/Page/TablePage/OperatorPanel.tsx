@@ -1,11 +1,14 @@
-import React, { Component, ReactNode } from 'react';
-import { Button, Checkbox, Dropdown, Menu, Tooltip } from 'antd';
-import { isFunction } from 'lodash';
+import React, {Component, ReactNode} from 'react';
+import {Button, Checkbox, Drawer, Dropdown, Menu, Tooltip} from 'antd';
+import {isFunction} from 'lodash';
 
-import { FormattedMessage } from 'umi-plugin-react/locale';
-import { StandardTableColumnProps } from '@/components/StandardTable';
+import {FormattedMessage} from 'umi-plugin-react/locale';
+import {StandardTableColumnProps} from '@/components/StandardTable';
 
 import styles from '@/components/Page/TablePage/index.less';
+import {WrappedFormUtils} from "antd/es/form/Form";
+import {FilterOutlined} from "@ant-design/icons/lib";
+import SearchPanel from "@/components/Page/TablePage/SearchPanel";
 
 export interface ComplexOperatorRender {
   left: () => React.ReactNode;
@@ -21,6 +24,7 @@ interface OperatorPanelProps {
   batchDelete: boolean;
   onBatchDelete: React.MouseEventHandler<HTMLElement>;
   onSearch: React.MouseEventHandler<HTMLElement>;
+  searchFormRender?: (form: WrappedFormUtils) => React.ReactNode;
   onSelectedDisplayColumnKeyChange?: (selectedKeys: string[]) => void;
   operatorRender: (() => React.ReactNode) | ComplexOperatorRender;
 }
@@ -30,7 +34,10 @@ interface OperatorPanelState {
    * controlling whether the visibility of dropdown
    */
   switchDropdownVisible: boolean;
+  switchSearchPanelVisible: boolean;
   selectedDisplayColumnsKey: string[];
+  searchFormValues: any;
+
 }
 
 class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
@@ -38,23 +45,37 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
     super(props);
     this.state = {
       switchDropdownVisible: false,
+      switchSearchPanelVisible: false,
       selectedDisplayColumnsKey: props.columns.map((x, index) =>
         (x.key || x.dataIndex || index).toString(),
       ),
+      searchFormValues: '',
     };
   }
 
-  onSelectedDisplayColumnKeyChangeCallback(keys: string[]) {
-    this.setState({ selectedDisplayColumnsKey: keys });
+  showSearchPanel = () => {
+    this.setState({
+      switchSearchPanelVisible: true,
+    });
+  };
 
-    const { onSelectedDisplayColumnKeyChange } = this.props;
+  closeSearchPanel = () => {
+    this.setState({
+      switchSearchPanelVisible: false,
+    });
+  };
+
+  onSelectedDisplayColumnKeyChangeCallback(keys: string[]) {
+    this.setState({selectedDisplayColumnsKey: keys});
+
+    const {onSelectedDisplayColumnKeyChange} = this.props;
     if (onSelectedDisplayColumnKeyChange) {
       onSelectedDisplayColumnKeyChange(keys);
     }
   }
 
   handleMenuItemClick = (info: { keyPath: string; key: string }) => {
-    const { selectedDisplayColumnsKey } = this.state;
+    const {selectedDisplayColumnsKey} = this.state;
     const index = selectedDisplayColumnsKey.indexOf(info.key);
     if (index >= 0) {
       selectedDisplayColumnsKey.splice(index, 1);
@@ -65,7 +86,7 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
   };
 
   handleSwitchMenuSelectAll = () => {
-    const { columns } = this.props;
+    const {columns} = this.props;
     const selectedDisplayColumnsKey = columns.map((x, index) =>
       (x.key || x.dataIndex || index).toString(),
     );
@@ -73,8 +94,8 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
   };
 
   handleSwitchMenuSelectReverse = () => {
-    const { columns } = this.props;
-    const { selectedDisplayColumnsKey } = this.state;
+    const {columns} = this.props;
+    const {selectedDisplayColumnsKey} = this.state;
     const filterColumns = columns.filter(
       (x, index) =>
         selectedDisplayColumnsKey.indexOf((x.key || x.dataIndex || index).toString()) < 0,
@@ -85,25 +106,25 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
   };
 
   handleSwitchMenusVisibleChange = (flag: boolean) => {
-    this.setState({ switchDropdownVisible: flag });
+    this.setState({switchDropdownVisible: flag});
   };
 
   renderSwitchMenus(items: StandardTableColumnProps<any>[]): React.ReactElement<any>[] {
-    const { selectedDisplayColumnsKey } = this.state;
+    const {selectedDisplayColumnsKey} = this.state;
 
     return items.map((item, index) => {
       const key = (item.key || item.dataIndex || index).toString();
       return (
         <Menu.Item key={key}>
-          <Checkbox checked={selectedDisplayColumnsKey.indexOf(key) >= 0} />
-          <span style={{ marginLeft: 8 }}>{item.title}</span>
+          <Checkbox checked={selectedDisplayColumnsKey.indexOf(key) >= 0}/>
+          <span style={{marginLeft: 8}}>{item.title}</span>
         </Menu.Item>
       );
     });
   }
 
   renderSwitchDropdown(): React.ReactElement {
-    const { columns } = this.props;
+    const {columns} = this.props;
 
     const menu = (
       // @ts-ignore
@@ -114,13 +135,13 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
             className="ant-table-filter-dropdown-link confirm"
             onClick={this.handleSwitchMenuSelectAll}
           >
-            {<FormattedMessage id="app.common.label.select-all" />}
+            {<FormattedMessage id="app.common.label.select-all"/>}
           </a>
           <a
             className="ant-table-filter-dropdown-link clear"
             onClick={this.handleSwitchMenuSelectReverse}
           >
-            {<FormattedMessage id="app.common.label.select-reversely" />}
+            {<FormattedMessage id="app.common.label.select-reversely"/>}
           </a>
         </div>
       </Menu>
@@ -132,19 +153,60 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
         onVisibleChange={this.handleSwitchMenusVisibleChange}
         visible={this.state.switchDropdownVisible}
       >
-        <Button shape="circle" icon="appstore" />
+        <Button shape="circle" icon="appstore"/>
       </Dropdown>
     );
   }
 
-  renderRightDefault() {
-    const { onSearch } = this.props;
+  onSearchReset = () => {
+
+    this.setState(
+      {
+        searchFormValues: {},
+      },
+    );
+  };
+
+  renderSearchPanel() {
+    const {searchFormRender, onSearch} = this.props;
+
     return (
       <>
-        <Tooltip title={<FormattedMessage id="component.common.text.refresh" />}>
-          <Button shape="circle" icon="sync" onClick={onSearch} />
+        <Button shape="circle" onClick={this.showSearchPanel}>
+          <FilterOutlined/>
+        </Button>
+        <Drawer
+          title={<FormattedMessage id="component.common.text.filter"/>}
+          width={720}
+          onClose={this.closeSearchPanel}
+          visible={this.state.switchSearchPanelVisible}
+          bodyStyle={{paddingBottom: 80}}
+        >
+          {(
+            searchFormRender && (
+              <SearchPanel
+                onSearch={onSearch}
+                onReset={this.onSearchReset}
+                //@ts-ignore
+                searchFormRender={searchFormRender}
+              />)
+          )}
+        </Drawer>
+      </>
+    );
+  }
+
+  renderRightDefault() {
+    const {onSearch} = this.props;
+    return (
+      <>
+        <Tooltip title={<FormattedMessage id="component.common.text.refresh"/>}>
+          <Button shape="circle" icon="sync" onClick={onSearch}/>
         </Tooltip>
-        <Tooltip title={<FormattedMessage id="app.common.label.columns-display-settings" />}>
+        <Tooltip title={<FormattedMessage id="component.common.text.filter"/>}>
+          {this.renderSearchPanel()}
+        </Tooltip>
+        <Tooltip title={<FormattedMessage id="app.common.label.columns-display-settings"/>}>
           {this.renderSwitchDropdown()}
         </Tooltip>
       </>
@@ -152,18 +214,18 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
   }
 
   renderRight() {
-    const { onSearch } = this.props;
+    const {onSearch} = this.props;
     // @ts-ignore
-    const { right } = this.props.operatorRender;
+    const {right} = this.props.operatorRender;
     if (right) {
       return right.map((x: { title: ReactNode; render?: () => React.ReactNode }) => {
         if (x.title === 'refresh') {
           return (
             <Tooltip
               key={x.title.toString()}
-              title={<FormattedMessage id="component.common.text.refresh" />}
+              title={<FormattedMessage id="component.common.text.refresh"/>}
             >
-              <Button shape="circle" icon="sync" onClick={onSearch} />
+              <Button shape="circle" icon="sync" onClick={onSearch}/>
             </Tooltip>
           );
         }
@@ -171,7 +233,7 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
           return (
             <Tooltip
               key={x.title.toString()}
-              title={<FormattedMessage id="app.common.label.columns-display-settings" />}
+              title={<FormattedMessage id="app.common.label.columns-display-settings"/>}
             >
               {this.renderSwitchDropdown()}
             </Tooltip>
@@ -189,16 +251,16 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
   }
 
   render() {
-    const { selectedRows, batchDelete, operatorRender, onBatchDelete } = this.props;
+    const {selectedRows, batchDelete, operatorRender, onBatchDelete} = this.props;
     return (
       <div className={styles.tableListOperator}>
         <div>
           {(isFunction(operatorRender) && operatorRender()) ||
-            // @ts-ignore
-            (isFunction(operatorRender.left) && operatorRender.left())}
+          // @ts-ignore
+          (isFunction(operatorRender.left) && operatorRender.left())}
           {selectedRows.length > 0 && batchDelete && (
             <Button onClick={onBatchDelete} icon="delete" type="danger">
-              <FormattedMessage id="component.common.text.delete" />
+              <FormattedMessage id="component.common.text.delete"/>
             </Button>
           )}
         </div>

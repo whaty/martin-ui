@@ -1,25 +1,25 @@
-import React, { Component, RefObject } from 'react';
+import React, {Component, RefObject} from 'react';
 import ReactDOM from 'react-dom';
-import { Dispatch } from 'redux';
+import {Dispatch} from 'redux';
 
-import { Card, Modal } from 'antd';
-import { WrappedFormUtils } from 'antd/es/form/Form';
-import { ExpandIconProps, PaginationConfig, SorterResult } from 'antd/es/table';
-import { TableLocale } from 'antd/es/table/interface';
-import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import {Card, Modal} from 'antd';
+import {WrappedFormUtils} from 'antd/es/form/Form';
+import {ExpandIconProps, PaginationConfig, SorterResult} from 'antd/es/table';
+import {TableLocale} from 'antd/es/table/interface';
+import {PageHeaderWrapper} from '@ant-design/pro-layout';
 import TransButton from 'antd/es/_util/transButton';
 import LocaleReceiver from 'antd/es/locale-provider/LocaleReceiver';
 import defaultLocale from 'antd/es/locale/default';
-import { formatMessage } from 'umi-plugin-react/locale';
+import {formatMessage} from 'umi-plugin-react/locale';
 import classNames from 'classnames';
 import RouteContext from '@ant-design/pro-layout/es/RouteContext';
 // @ts-ignore
 import addEventListener from 'rc-util/lib/Dom/addEventListener';
 import debounce from 'lodash/debounce';
 
-import StandardTable, { StandardTableColumnProps, TableListItem } from '@/components/StandardTable';
+import StandardTable, {StandardTableColumnProps, TableListItem} from '@/components/StandardTable';
 import SearchPanel from './SearchPanel';
-import OperatorPanel, { ComplexOperatorRender } from './OperatorPanel';
+import OperatorPanel, {ComplexOperatorRender} from './OperatorPanel';
 
 import styles from './index.less';
 
@@ -111,9 +111,9 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
       typeof props.data.pagination === 'boolean'
         ? props.data.pagination
         : {
-            ...defaultPagination,
-            ...props.data.pagination,
-          };
+          ...defaultPagination,
+          ...props.data.pagination,
+        };
     this.state = {
       selectedRows: props.selectedRows || [],
       searchFormValues: props.searchFormValues || {},
@@ -133,8 +133,8 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
     prevProps: Readonly<TablePageProps<T>>,
     prevState: Readonly<TablePageState<T>>,
   ): void {
-    const { data: { list: preList } = { list: [] } } = prevProps;
-    const { data: { list } = { list: [] } } = this.props;
+    const {data: {list: preList} = {list: []}} = prevProps;
+    const {data: {list} = {list: []}} = this.props;
     if (
       this.tableRef &&
       this.state.tableMaxHeight &&
@@ -202,7 +202,7 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
     sorter: SorterResult<T>,
   ) => {
     const filters = Object.keys(filtersArg).reduce((obj, key) => {
-      const newObj = { ...obj };
+      const newObj = {...obj};
       newObj[key] = getValue(filtersArg[key]);
       return newObj;
     }, {});
@@ -229,7 +229,7 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
         selectedRows: rows,
       },
       () => {
-        const { handleSelectRows } = this.props;
+        const {handleSelectRows} = this.props;
         if (handleSelectRows) {
           handleSelectRows(rows);
         }
@@ -247,8 +247,7 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
       ...fieldsValue,
     };
 
-    const { pagination } = this.state;
-
+    const {pagination} = this.state;
     this.setState(
       {
         searchFormValues: values,
@@ -272,32 +271,37 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
   };
 
   onBatchDelete = () => {
-    const { selectedRows } = this.state;
-    const { onDelete } = this.props;
+    const {selectedRows} = this.state;
+    const {onDelete} = this.props;
+    let that = this;
 
     if (selectedRows.length === 0) return;
     Modal.confirm({
       title: formatMessage(
-        { id: 'component.common.text.delete-items' },
-        { count: selectedRows.length },
+        {id: 'component.common.text.delete-items'},
+        {count: selectedRows.length},
       ),
       okType: 'danger',
       onOk() {
         if (onDelete) {
           onDelete(selectedRows);
+          that.setState({
+            selectedRows: [],
+          });
         }
       },
-      onCancel() {},
+      onCancel() {
+      },
     });
   };
 
   onSelectedDisplayColumnKeyChange = (selectedDisplayColumnsKey: string[]) => {
-    this.setState({ selectedDisplayColumnsKey });
+    this.setState({selectedDisplayColumnsKey});
   };
 
   doSearch = () => {
-    const { action, dispatch, searchParams = {} } = this.props;
-    const { searchFormValues, pagination, filters, sorter } = this.state;
+    const {action, dispatch, searchParams = {}} = this.props;
+    const {searchFormValues, pagination, filters, sorter} = this.state;
     const params: Partial<TableListParams> = {
       // @ts-ignore
       currentPage: pagination.current,
@@ -323,15 +327,15 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
   };
 
   expandIcon = ({
-    expanded,
-    expandable,
-    record,
-    needIndentSpaced,
-    onExpand,
-  }: ExpandIconProps<T>) => {
+                  expanded,
+                  expandable,
+                  record,
+                  needIndentSpaced,
+                  onExpand,
+                }: ExpandIconProps<T>) => {
     const prefixCls = 'ant-table';
     if (expandable) {
-      const { expandedRowRender } = this.props;
+      const {expandedRowRender} = this.props;
       if (expandedRowRender && expandedRowRender(record) == null) {
         return null;
       }
@@ -355,14 +359,14 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
     }
 
     if (needIndentSpaced) {
-      return <span className={`${prefixCls}-row-expand-icon ${prefixCls}-row-spaced`} />;
+      return <span className={`${prefixCls}-row-expand-icon ${prefixCls}-row-spaced`}/>;
     }
 
     return null;
   };
 
   renderSearchPanel() {
-    const { searchFormRender } = this.props;
+    const {searchFormRender} = this.props;
     return (
       searchFormRender && (
         <SearchPanel
@@ -375,8 +379,8 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
   }
 
   renderOperatorPanel() {
-    const { operatorRender, columns, batchDelete } = this.props;
-    const { selectedRows } = this.state;
+    const {operatorRender, columns, batchDelete, searchFormRender} = this.props;
+    const {selectedRows} = this.state;
 
     return (
       operatorRender && (
@@ -386,6 +390,7 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
           batchDelete={batchDelete}
           onBatchDelete={this.onBatchDelete}
           onSearch={this.doSearch}
+          searchFormRender={searchFormRender}
           operatorRender={operatorRender}
           onSelectedDisplayColumnKeyChange={this.onSelectedDisplayColumnKeyChange}
         />
@@ -394,21 +399,21 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
   }
 
   renderTableList() {
-    const { loading, data, expandedRowRender, tableOptions = {}, columns } = this.props;
-    const { selectedRows, selectedDisplayColumnsKey, tableMaxHeight } = this.state;
+    const {loading, data, expandedRowRender, tableOptions = {}, columns} = this.props;
+    const {selectedRows, selectedDisplayColumnsKey, tableMaxHeight} = this.state;
     const displayColumns =
       selectedDisplayColumnsKey === undefined
         ? columns
         : columns.filter(
-            (item, index) =>
-              selectedDisplayColumnsKey.indexOf((item.key || item.dataIndex || index).toString()) >=
-              0,
-          );
+        (item, index) =>
+          selectedDisplayColumnsKey.indexOf((item.key || item.dataIndex || index).toString()) >=
+          0,
+        );
 
-    const { scroll = {}, bodyStyle, ...rest } = tableOptions;
+    const {scroll = {}, bodyStyle, ...rest} = tableOptions;
     const tableOpts = {
       size: 'small',
-      bordered: true,
+      bordered: false,
       ...rest,
       scroll: {
         y: tableMaxHeight,
@@ -442,11 +447,11 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
       <Card bordered={false}>
         <div className={styles.tableList}>
           <RouteContext.Consumer>
-            {({ isMobile }) => {
+            {({isMobile}) => {
               this.isMobile = isMobile;
               return (
                 <>
-                  {this.renderSearchPanel()}
+                  {/*               {this.renderSearchPanel()}*/}
                   {this.renderOperatorPanel()}
                   {this.renderTableList()}
                 </>
@@ -459,7 +464,7 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
   }
 
   render() {
-    const { title, pageHeader } = this.props;
+    const {title, pageHeader} = this.props;
 
     if (pageHeader) {
       return <PageHeaderWrapper title={title}>{this.renderPage()}</PageHeaderWrapper>;

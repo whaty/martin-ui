@@ -52,4 +52,5 @@ export default {
   'menu.site.site-config': '站点配置1',
   'menu.system': '系统管理',
   'menu.system.role': '角色管理',
+  'menu.system.user': '用户管理',
 };
