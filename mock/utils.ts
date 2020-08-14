@@ -27,17 +27,17 @@ export function getUrlParams(url: string) {
 
 export function getTableList(req: Request, res: Response, tableListDataSource: any[]) {
   const params = req.query;
-  let pageSize = 10;
-  if (params.pageSize) {
-    pageSize = parseInt(`${params.pageSize}`, 10);
+  let size = 10;
+  if (params.size) {
+    size = parseInt(`${params.size}`, 10);
   }
-  const current = parseInt(`${params.currentPage}`, 10) || 1;
+  const current = parseInt(`${params.current}`, 10) || 1;
 
   const data = {
-    list: tableListDataSource.slice((current - 1) * pageSize, current * pageSize),
+    list: tableListDataSource.slice((current - 1) * size, current * size),
     pagination: {
       total: tableListDataSource.length,
-      pageSize,
+      size,
       current,
     },
   };

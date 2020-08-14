@@ -4,7 +4,7 @@ import {Dispatch} from 'redux';
 
 import {Card, Modal} from 'antd';
 import {WrappedFormUtils} from 'antd/es/form/Form';
-import {ExpandIconProps, PaginationConfig, SorterResult} from 'antd/es/table';
+import {ExpandIconProps, SorterResult} from 'antd/es/table';
 import {TableLocale} from 'antd/es/table/interface';
 import {PageHeaderWrapper} from '@ant-design/pro-layout';
 import TransButton from 'antd/es/_util/transButton';
@@ -28,9 +28,9 @@ const getValue = (obj: { [x: string]: string[] }) =>
     .map(key => obj[key])
     .join(',');
 
-export interface TableListPagination extends PaginationConfig {
+export interface TableListPagination {
   total: number;
-  pageSize: number;
+  size: number;
   current: number;
 }
 
@@ -39,11 +39,17 @@ export interface TableListData<T extends TableListItem> {
   pagination?: Partial<TableListPagination> | false;
 }
 
+
+export interface OrderItem {
+  column: string;
+  asc: boolean;
+}
+
 export interface TableListParams {
-  sorter: string;
+  orders: OrderItem[];
   status: string;
-  pageSize: number;
-  currentPage: number;
+  size: number;
+  current: number;
 }
 
 interface TablePageProps<T extends TableListItem> {
@@ -79,7 +85,7 @@ interface TablePageState<T extends TableListItem> {
 }
 
 const defaultPagination = {
-  pageSize: 10,
+  size: 10,
   current: 1,
 };
 
@@ -210,7 +216,7 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
       {
         pagination: {
           current: pagination.current,
-          pageSize: pagination.pageSize,
+          size: pagination.size,
         },
         filters,
         sorter,
@@ -304,15 +310,20 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
     const {searchFormValues, pagination, filters, sorter} = this.state;
     const params: Partial<TableListParams> = {
       // @ts-ignore
-      currentPage: pagination.current,
+      current: pagination.current,
       // @ts-ignore
-      pageSize: pagination.pageSize,
+      size: pagination.size,
       ...searchParams,
       ...searchFormValues,
       ...filters,
     };
     if (sorter && sorter.field) {
-      params.sorter = `${sorter.field}_${sorter.order}`;
+      const orderItem: OrderItem[] = [{
+        column: sorter.field,
+        asc: sorter.order === 'ascend',
+      }]
+      params.orders = orderItem;
+
     }
 
     if (dispatch && action) {
@@ -324,7 +335,8 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
         console.error(err);
       });
     }
-  };
+  }
+  ;
 
   expandIcon = ({
                   expanded,
@@ -389,7 +401,9 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
           selectedRows={selectedRows}
           batchDelete={batchDelete}
           onBatchDelete={this.onBatchDelete}
-          onSearch={this.doSearch}
+          onSearch={this.onSearch}
+          doSearch={this.doSearch}
+          onSearchReset={this.onSearchReset}
           searchFormRender={searchFormRender}
           operatorRender={operatorRender}
           onSelectedDisplayColumnKeyChange={this.onSelectedDisplayColumnKeyChange}

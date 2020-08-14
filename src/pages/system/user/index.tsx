@@ -53,7 +53,7 @@ class User extends Component<UserProps, UserState> {
         />
       </Menu.Item>
       <Menu.Item key="1">
-        <InlinePopconfirmBtn onConfirm={() => this.onDelete(record)}/>
+        <InlinePopconfirmBtn onConfirm={() => this.onDeleteOne(record)}/>
       </Menu.Item>
       <Menu.Divider/>
     </Menu>
@@ -69,6 +69,7 @@ class User extends Component<UserProps, UserState> {
     {
       title: <FormattedMessage id="app.user.label.username"/>,
       dataIndex: 'username',
+      sorter: true,
       width: 120,
     },
     {
@@ -158,6 +159,36 @@ class User extends Component<UserProps, UserState> {
     },
   ];
 
+  //配置搜索项
+  searchFormRender = (form: WrappedFormUtils) => {
+    const {getFieldDecorator} = form;
+    return (
+      [
+        <Col md={12} sm={24}>
+          <Form.Item label={<FormattedMessage id="app.user.label.username"/>}>
+            {getFieldDecorator('username')(<Input placeholder="请输入"/>)}
+          </Form.Item>
+        </Col>,
+        <Col md={12} sm={24}>
+          <Form.Item label={<FormattedMessage id="app.user.label.pwd"/>}>
+            {getFieldDecorator('pwd')(<Input placeholder="请输入"/>)}
+          </Form.Item>
+        </Col>,
+        <Col md={12} sm={24}>
+          <Form.Item label={<FormattedMessage id="app.user.label.salt"/>}>
+            {getFieldDecorator('salt')(<Input placeholder="请输入"/>)}
+          </Form.Item>
+        </Col>,
+        <Col md={12} sm={24}>
+          <Form.Item label={<FormattedMessage id="app.user.label.email"/>}>
+            {getFieldDecorator('email')(<Input placeholder="请输入"/>)}
+          </Form.Item>
+        </Col>,
+
+      ]
+    );
+  };
+
   showModal = (currentRecord: UserListItem) => {
     this.setState({showLoginScriptModal: true, currentRecord});
   };
@@ -166,20 +197,17 @@ class User extends Component<UserProps, UserState> {
    * 删除回调函数
    * @param ids
    */
-  onDelete = (user: UserListItem) => {
+  onDeleteOne = (user: UserListItem) => {
     const {dispatch} = this.props;
-    if (user) return;
     const that = this;
-    debugger;
     dispatch({
       type: 'system_user/remove',
-      payload: {
-        user
-      }
+      payload: user
+
     })
     // @ts-ignore
       .then((response: any) => {
-        if (response.code === 200) {
+        if (response && response.code === 200) {
           if (that.pageRef.current) {
             that.pageRef.current.doSearch();
           }
@@ -203,7 +231,7 @@ class User extends Component<UserProps, UserState> {
     })
     // @ts-ignore
       .then((response: any) => {
-        if (response.code === 200) {
+        if (response && response.code === 200) {
           if (that.pageRef.current) {
             that.pageRef.current.doSearch();
           }
@@ -226,7 +254,7 @@ class User extends Component<UserProps, UserState> {
       payload: fields,
       // @ts-ignore
     }).then((response) => {
-      if (response.code === 200) {
+      if (response && response.code === 200) {
         if (that.pageRef.current) {
           that.pageRef.current.doSearch();
         }
@@ -247,35 +275,6 @@ class User extends Component<UserProps, UserState> {
     });
   };
 
-  //配置搜索项
-  searchFormRender = (form: WrappedFormUtils) => {
-    const {getFieldDecorator} = form;
-    return (
-      [
-        <Col md={12} sm={24}>
-          <Form.Item label={<FormattedMessage id="app.user.label.username"/>}>
-            {getFieldDecorator('name')(<Input placeholder="请输入"/>)}
-          </Form.Item>
-        </Col>,
-        <Col md={12} sm={24}>
-          <Form.Item label={<FormattedMessage id="app.user.label.username"/>}>
-            {getFieldDecorator('name')(<Input placeholder="请输入"/>)}
-          </Form.Item>
-        </Col>,
-        <Col md={12} sm={24}>
-          <Form.Item label={<FormattedMessage id="app.user.label.username"/>}>
-            {getFieldDecorator('name')(<Input placeholder="请输入"/>)}
-          </Form.Item>
-        </Col>,
-        <Col md={12} sm={24}>
-          <Form.Item label={<FormattedMessage id="app.user.label.username"/>}>
-            {getFieldDecorator('name')(<Input placeholder="请输入"/>)}
-          </Form.Item>
-        </Col>,
-
-      ]
-    );
-  };
 
   //配置操作项
   operatorRender = () => (

@@ -1,7 +1,9 @@
 export default {
   'component.tagSelect.expand': '展开',
   'component.tagSelect.collapse': '收起',
-  'component.tagSelect.all': '全部', 'component.common.text.delete': '删除',
+  'component.tagSelect.all': '全部',
+  'component.common.text.delete': '删除',
+  'component.common.text.batch-delete': '批量删除',
   'component.common.text.add': '新建',
   'component.common.text.edit': '编辑',
   'component.common.text.detail': '详情',

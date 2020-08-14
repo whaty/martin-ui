@@ -24,6 +24,8 @@ interface OperatorPanelProps {
   batchDelete: boolean;
   onBatchDelete: React.MouseEventHandler<HTMLElement>;
   onSearch: React.MouseEventHandler<HTMLElement>;
+  doSearch: React.MouseEventHandler<HTMLElement>;
+  onSearchReset: React.MouseEventHandler<HTMLElement>;
   searchFormRender?: (form: WrappedFormUtils) => React.ReactNode;
   onSelectedDisplayColumnKeyChange?: (selectedKeys: string[]) => void;
   operatorRender: (() => React.ReactNode) | ComplexOperatorRender;
@@ -164,47 +166,39 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
       {
         searchFormValues: {},
       },
+
     );
   };
 
-  renderSearchPanel() {
-    const {searchFormRender, onSearch} = this.props;
-
-    return (
-      <>
-        <Button shape="circle" onClick={this.showSearchPanel}>
-          <FilterOutlined/>
-        </Button>
-        <Drawer
-          title={<FormattedMessage id="component.common.text.filter"/>}
-          width={720}
-          onClose={this.closeSearchPanel}
-          visible={this.state.switchSearchPanelVisible}
-          bodyStyle={{paddingBottom: 80}}
-        >
-          {(
-            searchFormRender && (
-              <SearchPanel
-                onSearch={onSearch}
-                onReset={this.onSearchReset}
-                //@ts-ignore
-                searchFormRender={searchFormRender}
-              />)
-          )}
-        </Drawer>
-      </>
-    );
-  }
 
   renderRightDefault() {
-    const {onSearch} = this.props;
+    const {searchFormRender,onSearchReset,onSearch} = this.props;
     return (
       <>
         <Tooltip title={<FormattedMessage id="component.common.text.refresh"/>}>
-          <Button shape="circle" icon="sync" onClick={onSearch}/>
+          <Button shape="circle" icon="sync" onClick={onSearchReset}/>
         </Tooltip>
         <Tooltip title={<FormattedMessage id="component.common.text.filter"/>}>
-          {this.renderSearchPanel()}
+          <Button shape="circle" onClick={this.showSearchPanel}>
+            <FilterOutlined/>
+          </Button>
+          <Drawer
+            title={<FormattedMessage id="component.common.text.filter"/>}
+            width={500}
+            onClose={this.closeSearchPanel}
+            visible={this.state.switchSearchPanelVisible}
+            bodyStyle={{paddingBottom: 80}}
+          >
+            {(
+              searchFormRender && (
+                <SearchPanel
+                  onSearch={onSearch}
+                  onReset={this.onSearchReset}
+                  //@ts-ignore
+                  searchFormRender={searchFormRender}
+                />)
+            )}
+          </Drawer>
         </Tooltip>
         <Tooltip title={<FormattedMessage id="app.common.label.columns-display-settings"/>}>
           {this.renderSwitchDropdown()}
@@ -260,7 +254,7 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
           (isFunction(operatorRender.left) && operatorRender.left())}
           {selectedRows.length > 0 && batchDelete && (
             <Button onClick={onBatchDelete} icon="delete" type="danger">
-              <FormattedMessage id="component.common.text.delete"/>
+              <FormattedMessage id="component.common.text.batch-delete"/>
             </Button>
           )}
         </div>

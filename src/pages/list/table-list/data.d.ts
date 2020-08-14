@@ -16,7 +16,7 @@ export interface TableListItem {
 
 export interface TableListPagination {
   total: number;
-  pageSize: number;
+  size: number;
   current: number;
 }
 
@@ -29,6 +29,6 @@ export interface TableListParams {
   sorter: string;
   status: string;
   name: string;
-  pageSize: number;
-  currentPage: number;
+  size: number;
+  current: number;
 }

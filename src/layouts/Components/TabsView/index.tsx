@@ -29,7 +29,6 @@ function searchPathIdAndName(childrenPathname: string, originalMenuData: any[]):
     // @ts-ignore
     return result;
   }
-
   return getPathIdAndName(childrenPathname, originalMenuData, null) || ['404', 'Error'];
 }
 

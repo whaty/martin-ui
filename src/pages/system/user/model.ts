@@ -61,10 +61,12 @@ const UserModel: UserModelType = {
   effects: {
     * fetch({payload}, {call, put}) {
       const response = yield call(queryUsers, payload);
-      yield put({
-        type: 'save',
-        payload: response.data,
-      });
+      if (response) {
+        yield put({
+          type: 'save',
+          payload: response.data,
+        });
+      }
     },
     * create({payload}, {call, put}) {
       const response = yield call(addUser, payload);
@@ -102,7 +104,7 @@ const UserModel: UserModelType = {
           list: action.payload.records,
           pagination: {
             total: action.payload.total,
-            pageSize: action.payload.size,
+            size: action.payload.size,
             current: action.payload.current,
           }
         },

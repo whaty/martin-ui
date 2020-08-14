@@ -39,7 +39,7 @@ export async function addUser(params: UserListItem) {
 }
 
 export async function editUser(params: UserListItem) {
-  return request('/syst/user/edit', {
+  return request('/syst/user/update', {
     method: 'POST',
     data: {
       ...params,

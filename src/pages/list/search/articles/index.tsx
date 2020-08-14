@@ -14,7 +14,7 @@ import styles from './style.less';
 const { Option } = Select;
 const FormItem = Form.Item;
 
-const pageSize = 5;
+const size = 5;
 
 interface ArticlesProps extends FormComponentProps {
   dispatch: Dispatch<any>;
@@ -45,7 +45,7 @@ class Articles extends Component<ArticlesProps> {
     dispatch({
       type: 'listAndsearchAndarticles/appendFetch',
       payload: {
-        count: pageSize,
+        count: size,
       },
     });
   };

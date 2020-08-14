@@ -139,7 +139,7 @@ const TopSearch = ({
       dataSource={searchData}
       pagination={{
         style: { marginBottom: 0 },
-        pageSize: 5,
+        size: 5,
       }}
     />
   </Card>

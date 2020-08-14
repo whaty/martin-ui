@@ -1,10 +1,10 @@
 import React from 'react';
-import { Tabs } from 'antd';
-import { TabsProps } from 'antd/es/tabs';
+import {Tabs} from 'antd';
+import {TabsProps} from 'antd/es/tabs';
 import findIndex from 'lodash/findIndex';
-import { Dropdown, Menu } from 'antd/es';
-import { MenuProps } from 'antd/es/menu';
-import { FormattedMessage } from 'umi-plugin-react/locale';
+import {Dropdown, Menu} from 'antd/es';
+import {MenuProps} from 'antd/es/menu';
+import {FormattedMessage} from 'umi-plugin-react/locale';
 
 function addTab(newTab: TabView, activedTabs: TabView[]) {
   // filter 过滤路由 为 '/' 的 children
@@ -12,7 +12,7 @@ function addTab(newTab: TabView, activedTabs: TabView[]) {
   // console.log(activedTabs, newTab);
   return [...activedTabs, newTab]
     .filter(item => item.path !== '/')
-    .map((item, index) => ({ ...item, closable: !(activedTabs.length === 0 && index === 0) }));
+    .map((item, index) => ({...item, closable: !(activedTabs.length === 0 && index === 0)}));
 }
 
 function switchAndUpdateTab(
@@ -22,7 +22,7 @@ function switchAndUpdateTab(
   children: React.ReactChildren,
   activedTabs: TabView[],
 ) {
-  const { path, content, refresh, ...rest } = activedTabs[activeIndex];
+  const {path, content, refresh, ...rest} = activedTabs[activeIndex];
   activedTabs.splice(activeIndex, 1, {
     tab: tabName,
     content: refresh ? content : children,
@@ -30,7 +30,7 @@ function switchAndUpdateTab(
     ...extraTabProperties,
   });
   // map 删除后的 activedTabs 长度为 1 时不可删除
-  return activedTabs.map(item => (activedTabs.length === 1 ? { ...item, closable: false } : item));
+  return activedTabs.map(item => (activedTabs.length === 1 ? {...item, closable: false} : item));
 }
 
 // tabs 菜单选项 key 值
@@ -42,6 +42,7 @@ export interface TabView {
   tab: string;
   key: string;
   content: React.ReactChildren;
+
   /** used to extends tab's properties */
   [k: string]: any;
 }
@@ -69,9 +70,10 @@ interface TabsViewState {
 }
 
 class TabsView extends React.Component<TabsViewProps, TabsViewState> {
+  // @ts-ignore
   static getDerivedStateFromProps(props: TabsViewProps, state: TabsViewState) {
-    const { children, activeKey, activeTitle, extraTabProperties } = props;
-    const { activedTabs, nextTabKey } = state;
+    const {children, activeKey, activeTitle, extraTabProperties} = props;
+    const {activedTabs, nextTabKey} = state;
     // return state and set nextTabKey to `null` after delete tab
     if (nextTabKey) {
       return {
@@ -81,7 +83,7 @@ class TabsView extends React.Component<TabsViewProps, TabsViewState> {
       };
     }
 
-    const activedTabIndex = findIndex(activedTabs, { key: activeKey });
+    const activedTabIndex = findIndex(activedTabs, {key: activeKey});
     // return state after switch or update tab
     // already opened
     if (activedTabIndex > -1) {
@@ -103,10 +105,12 @@ class TabsView extends React.Component<TabsViewProps, TabsViewState> {
       content: children,
       ...extraTabProperties,
     };
-    return {
-      activedTabs: addTab(newTab, activedTabs),
-      activeKey,
-    };
+    if (activeTitle != 'Error') {
+      return {
+        activedTabs: addTab(newTab, activedTabs),
+        activeKey,
+      };
+    }
   }
 
   constructor(props: TabsViewProps) {
@@ -119,8 +123,8 @@ class TabsView extends React.Component<TabsViewProps, TabsViewState> {
   }
 
   handleTabsMenuClick = (tabKey: string): MenuProps['onClick'] => event => {
-    const { key } = event;
-    const { activedTabs } = this.state;
+    const {key} = event;
+    const {activedTabs} = this.state;
 
     if (key === closeCurrentTabMenuKey) {
       this.remove(tabKey);
@@ -129,14 +133,14 @@ class TabsView extends React.Component<TabsViewProps, TabsViewState> {
       const currentTab = activedTabs.filter(item => item.key === tabKey);
       this.setState({
         // @ts-ignore
-        activedTabs: currentTab.map(item => ({ ...item, closable: false })),
+        activedTabs: currentTab.map(item => ({...item, closable: false})),
       });
     }
   };
 
   handleTabSwitch = (keyToSwitch: string) => {
-    const { handleTabChange } = this.props;
-    const { activedTabs } = this.state;
+    const {handleTabChange} = this.props;
+    const {activedTabs} = this.state;
     if (typeof handleTabChange === 'function') {
       handleTabChange(keyToSwitch, activedTabs);
     }
@@ -147,8 +151,8 @@ class TabsView extends React.Component<TabsViewProps, TabsViewState> {
   };
 
   remove = (key: string) => {
-    const { afterRemoveTab } = this.props;
-    const { activedTabs, activeKey } = this.state;
+    const {afterRemoveTab} = this.props;
+    const {activedTabs, activeKey} = this.state;
     if (key !== activeKey) {
       this.setState(
         {
@@ -165,7 +169,7 @@ class TabsView extends React.Component<TabsViewProps, TabsViewState> {
       return;
     }
 
-    const targetIndex = findIndex(activedTabs, { key });
+    const targetIndex = findIndex(activedTabs, {key});
     const nextIndex = targetIndex > 0 ? targetIndex - 1 : targetIndex + 1;
     const nextTabKey = activedTabs[nextIndex].key;
 
@@ -183,7 +187,7 @@ class TabsView extends React.Component<TabsViewProps, TabsViewState> {
   };
 
   getHeadWidth = () => {
-    const { isMobile, collapsed, fixedHeader, layout, siderWidth = 256 } = this.props;
+    const {isMobile, collapsed, fixedHeader, layout, siderWidth = 256} = this.props;
     if (isMobile || !fixedHeader || layout === 'topmenu') {
       return '100%';
     }
@@ -191,16 +195,16 @@ class TabsView extends React.Component<TabsViewProps, TabsViewState> {
   };
 
   render() {
-    const { activedTabs, activeKey } = this.state;
+    const {activedTabs, activeKey} = this.state;
     const width = this.getHeadWidth();
 
     const setMenu = (key: string) => (
       <Menu onClick={this.handleTabsMenuClick(key)}>
         <Menu.Item disabled={activedTabs.length === 1} key={closeCurrentTabMenuKey}>
-          <FormattedMessage id="component.tabsView.context.close-current" />
+          <FormattedMessage id="component.tabsView.context.close-current"/>
         </Menu.Item>
         <Menu.Item disabled={activedTabs.length === 1} key={closeOthersTabMenuKey}>
-          <FormattedMessage id="component.tabsView.context.close-others" />
+          <FormattedMessage id="component.tabsView.context.close-others"/>
         </Menu.Item>
       </Menu>
     );
@@ -209,7 +213,7 @@ class TabsView extends React.Component<TabsViewProps, TabsViewState> {
       <span onContextMenu={event => event.preventDefault()}>
         <Dropdown overlay={setMenu(key)} trigger={['contextMenu']}>
           <span>
-            <FormattedMessage id={tab} />
+            <FormattedMessage id={tab}/>
           </span>
         </Dropdown>
       </span>
@@ -238,7 +242,7 @@ class TabsView extends React.Component<TabsViewProps, TabsViewState> {
         className="ant-pro-page-content-wrap-tabs"
         type="editable-card"
         activeKey={activeKey}
-        tabBarStyle={{ borderBottom: 0, margin: '0 0 10px 0' }}
+        tabBarStyle={{borderBottom: 0, margin: '0 0 10px 0'}}
         tabBarGutter={0}
         hideAdd
         renderTabBar={renderTabBar}
@@ -247,14 +251,14 @@ class TabsView extends React.Component<TabsViewProps, TabsViewState> {
       >
         {activedTabs && activedTabs.length
           ? activedTabs.map((item: TabView) => (
-              <Tabs.TabPane
-                tab={setTab(item.tab, item.key)}
-                key={item.key}
-                closable={item.closable}
-              >
-                {item.content}
-              </Tabs.TabPane>
-            ))
+            <Tabs.TabPane
+              tab={setTab(item.tab, item.key)}
+              key={item.key}
+              closable={item.closable}
+            >
+              {item && item.content ? item.content : null}
+            </Tabs.TabPane>
+          ))
           : null}
       </Tabs>
     );

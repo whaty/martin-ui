@@ -189,7 +189,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
-      pageSize: 5,
+      size: 5,
       total: 50,
     };
 

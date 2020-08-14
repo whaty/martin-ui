@@ -67,17 +67,17 @@ function getRule(req: Request, res: Response, u: string) {
     dataSource = dataSource.filter(data => data.name.indexOf(params.name) > -1);
   }
 
-  let pageSize = 10;
-  if (params.pageSize) {
-    pageSize = parseInt(`${params.pageSize}`, 0);
+  let size = 10;
+  if (params.size) {
+    size = parseInt(`${params.size}`, 0);
   }
 
   const result = {
     list: dataSource,
     pagination: {
       total: dataSource.length,
-      pageSize,
-      current: parseInt(`${params.currentPage}`, 10) || 1,
+      size,
+      current: parseInt(`${params.current}`, 10) || 1,
     },
   };
 

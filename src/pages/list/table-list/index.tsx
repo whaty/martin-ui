@@ -174,8 +174,8 @@ class TableList extends Component<TableListProps, TableListState> {
     }, {});
 
     const params: Partial<TableListParams> = {
-      currentPage: pagination.current,
-      pageSize: pagination.pageSize,
+      current: pagination.current,
+      size: pagination.size,
       ...formValues,
       ...filters,
     };

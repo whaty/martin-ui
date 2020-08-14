@@ -205,17 +205,17 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         <div style={{position: 'relative'}} className="ant-pro-page-content-wrap">
           {tabsView ? (
             <RouteContext.Consumer>
-              {value => (
-                <TabsView {...value}>
-                  <div className="ant-pro-page-content-wrap-children-content" style={{marginTop: 50}}>
-                    <Authorized authority={authorized!.authority} noMatch={noMatch}>
-                      {children}
-                    </Authorized>
-                  </div>
-                  {
-                    fixedHeader && footerRender}
-                </TabsView>
-              )}
+              {
+                value => (
+                  <TabsView {...value}>
+                    <div className="ant-pro-page-content-wrap-children-content" style={{marginTop: 50}}>
+                      <Authorized authority={authorized!.authority} noMatch={noMatch}>
+                        {children}
+                      </Authorized>
+                    </div>
+                    {fixedHeader && footerRender}
+                  </TabsView>
+                )}
             </RouteContext.Consumer>
           ) : (
             <div className="ant-pro-page-content-wrap-children-content">
