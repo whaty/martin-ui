@@ -46,3 +46,22 @@ export async function editUser(params: UserListItem) {
     },
   });
 }
+
+export async function queryAllRoles(params: UserListItem) {
+  return request('/syst/user/getAllRoles', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+export async function querySelectRoles(params: UserListItem) {
+  return request('/syst/user/getSelectRoles', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+

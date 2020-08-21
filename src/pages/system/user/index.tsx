@@ -1,5 +1,5 @@
-import {Button, Col, Divider, Dropdown, Form, Icon, Input, Menu, message,} from 'antd';
-import React, {Component, RefObject} from 'react';
+import {Button, Col, Divider, Dropdown, Form, Icon, Input, Menu, message, Checkbox, Row,} from 'antd';
+import React, {Component, ReactNode, RefObject} from 'react';
 
 import {Dispatch} from 'redux';
 import {connect} from 'dva';
@@ -15,6 +15,8 @@ import {ModalForm} from '@/components/Form';
 
 import {UserListItem, UserStateType} from './model';
 import {DownOutlined} from "@ant-design/icons/lib";
+import RelationDrawer from "@/components/Page/RelationDrawer";
+import {CheckboxValueType} from "antd/lib/checkbox/Group";
 
 interface UserProps {
   dispatch: Dispatch<any>;
@@ -26,12 +28,14 @@ interface UserState {
   selectedRows: UserListItem[];
   showLoginScriptModal: boolean;
   currentRecord?: UserListItem;
+  relationVisible?: boolean;
 }
 
 class User extends Component<UserProps, UserState> {
   state: UserState = {
     selectedRows: [],
     showLoginScriptModal: false,
+    relationVisible: false,
   };
 
   private pageRef: RefObject<TablePage<UserListItem>> = React.createRef();
@@ -55,9 +59,31 @@ class User extends Component<UserProps, UserState> {
       <Menu.Item key="1">
         <InlinePopconfirmBtn onConfirm={() => this.onDeleteOne(record)}/>
       </Menu.Item>
+      <Menu.Item key="2">
+        <a onClick={this.showRelationDrawer}>
+          <Icon type="edit"/>
+          <FormattedMessage id="app.user.add-user-role"/>
+        </a>
+        {/*<InlinePopconfirmBtn text={"分配角色1"} onConfirm={() => this.showRelationDrawer(record)}/>*/}
+      </Menu.Item>
       <Menu.Divider/>
     </Menu>
   );
+
+  showRelationDrawer = () => {
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'system_user/fetchAllRoles',
+    });
+    dispatch({
+      type: 'system_user/fetchSelectRoles',
+    });
+    this.setState({relationVisible: true});
+  }
+
+  closeRelationDrawer = () => {
+    this.setState({relationVisible: false});
+  }
 
   /**
    *
@@ -294,6 +320,38 @@ class User extends Component<UserProps, UserState> {
 
   );
 
+  onChange(checkedValue: Array<CheckboxValueType>) {
+    console.log(318, checkedValue);
+  }
+
+
+  //配置弹出框内容
+  renderRelationRender = () => {
+    const {
+      // @ts-ignore
+      system_user: {allRoles, selectRoles},
+    } = this.props;
+    const elements: ReactNode[] = [];
+    console.log(335, selectRoles)
+    console.log(336, allRoles)
+    allRoles.forEach((item: string, index: number) => {
+      elements.push(
+        <Col span={8} style={{padding: 5}} key={index}>
+          <Checkbox value={item}>{item}</Checkbox>
+        </Col>
+      );
+    });
+    return (
+      <>
+        <Checkbox.Group style={{width: '100%'}} options={allRoles} defaultValue={selectRoles}>
+          <Row>
+            {elements}
+          </Row>
+        </Checkbox.Group>
+      </>
+    );
+  }
+
   render() {
     const {
       dispatch,
@@ -301,23 +359,31 @@ class User extends Component<UserProps, UserState> {
       // @ts-ignore
       system_user: {data},
     } = this.props;
-    const {selectedRows} = this.state;
+    const {selectedRows, relationVisible} = this.state;
 
     return (
-      <TablePage<UserListItem>
-        ref={this.pageRef}
-        title={formatMessage({id: 'app.user'})}
-        action="system_user/fetch"
-        columns={this.columns}
-        data={data}
-        loading={loading}
-        searchFormRender={this.searchFormRender}
-        operatorRender={this.operatorRender}
-        selectedRows={selectedRows}
-        handleSelectRows={this.handleSelectRows}
-        onDelete={(rows: UserListItem[]) => this.batchDelete(rows.map(row => row.id))}
-        dispatch={dispatch}
-      />
+      <>
+        <TablePage<UserListItem>
+          ref={this.pageRef}
+          title={formatMessage({id: 'app.user'})}
+          action="system_user/fetch"
+          columns={this.columns}
+          data={data}
+          loading={loading}
+          searchFormRender={this.searchFormRender}
+          operatorRender={this.operatorRender}
+          selectedRows={selectedRows}
+          handleSelectRows={this.handleSelectRows}
+          onDelete={(rows: UserListItem[]) => this.batchDelete(rows.map(row => row.id))}
+          dispatch={dispatch}
+        />
+        // 通过一个Drawer配置关系
+        <RelationDrawer
+          visible={relationVisible}
+          onClose={this.closeRelationDrawer}
+          relationRender={this.renderRelationRender}
+        />
+      </>
     );
   }
 }

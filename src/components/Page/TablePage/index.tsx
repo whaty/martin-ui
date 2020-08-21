@@ -465,7 +465,6 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
               this.isMobile = isMobile;
               return (
                 <>
-                  {/*               {this.renderSearchPanel()}*/}
                   {this.renderOperatorPanel()}
                   {this.renderTableList()}
                 </>

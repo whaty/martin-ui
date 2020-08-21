@@ -4,7 +4,15 @@ import {EffectsCommandMap} from 'dva';
 import {TableListItem} from '@/components/StandardTable';
 import {TableListData} from '@/components/Page/TablePage';
 
-import {addUser, deleteBatchUsers, editUser, query as queryUsers, removeUsers} from './service';
+import {
+  addUser,
+  deleteBatchUsers,
+  editUser,
+  query as queryUsers,
+  removeUsers,
+  queryAllRoles,
+  querySelectRoles
+} from './service';
 import {queryCurrent} from "@/services/user";
 
 export interface UserListItem extends TableListItem {
@@ -19,6 +27,8 @@ export interface UserListItem extends TableListItem {
 
 export interface UserStateType {
   data: TableListData<UserListItem>;
+  allRoles: string[];
+  selectRoles: string[];
 }
 
 export type Effect = (
@@ -36,6 +46,8 @@ export interface UserModelType {
     removeBatch: Effect;
     modify: Effect;
     fetchCurrent: Effect;
+    fetchAllRoles: Effect;
+    fetchSelectRoles: Effect;
   };
   reducers: {
     save: Reducer<UserStateType>;
@@ -43,6 +55,10 @@ export interface UserModelType {
     edit: Reducer<UserStateType>;
     del: Reducer<UserStateType>;
     saveCurrentUser: Reducer<UserStateType>;
+    saveAllRoles: Reducer<UserStateType>;
+    saveSelectRoles: Reducer<UserStateType>;
+
+
   };
 }
 
@@ -56,6 +72,8 @@ const UserModel: UserModelType = {
       list: [],
       pagination: {},
     },
+    allRoles: [],
+    selectRoles: [],
   },
 
   effects: {
@@ -92,12 +110,29 @@ const UserModel: UserModelType = {
         payload: response,
       });
     },
+
+    * fetchAllRoles(_, {call, put}) {
+      const response = yield call(queryAllRoles);
+      if (response) {
+        yield put({
+          type: 'saveAllRoles',
+          payload: response.data,
+        });
+      }
+    },
+
+    * fetchSelectRoles(_, {call, put}) {
+      const response = yield call(querySelectRoles);
+      yield put({
+        type: 'saveSelectRoles',
+        payload: response.data,
+      });
+    },
   },
 
   reducers: {
-
+    // @ts-ignore
     save(state, action) {
-      console.log(177, action);
       return {
         ...state,
         data: {
@@ -115,6 +150,21 @@ const UserModel: UserModelType = {
       return {
         ...state,
         currentUser: action.payload || {},
+      };
+    },
+    // @ts-ignore
+    saveAllRoles(state, action) {
+      console.log(156, action)
+      return {
+        ...state,
+        allRoles: action.payload || [],
+      };
+    },
+    // @ts-ignore
+    saveSelectRoles(state, action) {
+      return {
+        ...state,
+        selectRoles: action.payload || [],
       };
     },
 

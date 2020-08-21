@@ -1,5 +1,5 @@
 import React, {Component, ReactNode} from 'react';
-import {Button, Checkbox, Drawer, Dropdown, Menu, Tooltip} from 'antd';
+import {Alert, Button, Checkbox, Drawer, Dropdown, Menu, Tooltip} from 'antd';
 import {isFunction} from 'lodash';
 
 import {FormattedMessage} from 'umi-plugin-react/locale';
@@ -170,6 +170,19 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
     );
   };
 
+  renderFilterFooter(){
+    return (
+      <>
+        <Alert
+          message="Informational Notes"
+          description="Additional description and information about copywriting."
+          type="info"
+          showIcon
+        />
+      </>
+    );
+  }
+
 
   renderRightDefault() {
     const {searchFormRender,onSearchReset,onSearch} = this.props;
@@ -185,6 +198,8 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
           <Drawer
             title={<FormattedMessage id="component.common.text.filter"/>}
             width={500}
+            getContainer={false}
+            mask={false}
             onClose={this.closeSearchPanel}
             visible={this.state.switchSearchPanelVisible}
             bodyStyle={{paddingBottom: 80}}

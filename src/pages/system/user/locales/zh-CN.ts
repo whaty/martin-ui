@@ -11,10 +11,15 @@ export default {
   'app.common.bale.more': '更多',
   'app.common.validation.not-empty': '必填项不能为空',
 
-  'app.user':'用户管理',
+  'app.user':'用户管理locales\n' +
+    '_mock.ts\n' +
+    'index.tsx\n' +
+    'model.ts\n' +
+    'service.ts',
 
   'app.user.edit-the-user': '编辑用户',
   'app.user.add-new-user': '新增用户',
+  'app.user.add-user-role': '分配角色',
 
   'app.user.label.username': '用户名',
   'app.user.label.pwd': '密码',

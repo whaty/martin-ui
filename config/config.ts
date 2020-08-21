@@ -308,6 +308,18 @@ export default {
                   path: '/system/user',
                   component: './system/user',
                 },
+                {
+                  name: 'role',
+                  icon: 'smile',
+                  path: '/system/role',
+                  component: './system/role',
+                },
+                {
+                  name: 'user-role',
+                  icon: 'smile',
+                  path: '/system/user-role',
+                  component: './system/user-role',
+                },
               ],
             },
             {
