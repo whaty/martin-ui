@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
-import { FormComponentProps } from 'antd/es/form';
-import { GetFieldDecoratorOptions, WrappedFormUtils } from 'antd/es/form/Form';
-import { Form } from 'antd';
+import { FormComponentProps } from '@ant-design/compatible/es/form';
+import { WrappedFormUtils } from '@ant-design/compatible/es/form/Form';
+import { GetFieldDecoratorOptions } from 'antd/es/form/Form';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
 import { get } from 'lodash';
 
 export interface EditingRender {

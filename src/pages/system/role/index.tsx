@@ -1,10 +1,13 @@
-import {Button, Col, Divider, Dropdown, Form, Icon, Input, Menu, message,} from 'antd';
+import { EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Col, Divider, Dropdown, Input, Menu, message } from 'antd';
 import React, {Component, RefObject} from 'react';
 
 import {Dispatch} from 'redux';
 import {connect} from 'dva';
 
-import {WrappedFormUtils} from 'antd/es/form/Form';
+import { WrappedFormUtils } from '@ant-design/compatible/es/form/Form';
 import {formatMessage, FormattedMessage} from 'umi-plugin-react/locale';
 
 import {TablePage} from '@/components/Page';
@@ -44,7 +47,7 @@ class Role extends Component<RoleProps, RoleState> {
           onSubmit={this.handleEdit}
           element={
             <a>
-              <Icon type="edit"/>
+              <EditOutlined />
               <FormattedMessage id="component.common.text.edit"/>
             </a>
           }
@@ -332,7 +335,7 @@ class Role extends Component<RoleProps, RoleState> {
         title={formatMessage({id: 'app.role.add-new-role'})}
         onSubmit={this.handleAdd}
         element={
-          <Button type="primary" icon="plus">
+          <Button type="primary" icon={<PlusOutlined />}>
             <FormattedMessage id="component.common.text.add"/>
           </Button>
         }

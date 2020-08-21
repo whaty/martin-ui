@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Button, Col, Form, Row } from 'antd';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Col, Row } from 'antd';
 import { FormattedMessage } from 'umi-plugin-react/locale';
 import { isFunction } from 'lodash';
 
-import { FormComponentProps, WrappedFormUtils } from 'antd/es/form/Form';
+import { FormComponentProps, WrappedFormUtils } from '@ant-design/compatible/es/form/Form';
 
 import styles from '@/components/Page/TablePage/index.less';
 

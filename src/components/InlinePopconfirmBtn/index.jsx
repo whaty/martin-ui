@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
-import { Popconfirm, Icon } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Popconfirm } from 'antd';
 
 import { FormattedMessage } from 'umi-plugin-react/locale';
 
@@ -23,7 +24,7 @@ export default class InlinePopconfirmBtn extends PureComponent {
     return (
       <Popconfirm {...rest}>
         <a className={style}>
-          <Icon type={type} />
+          <LegacyIcon type={type} />
           {text}
         </a>
       </Popconfirm>

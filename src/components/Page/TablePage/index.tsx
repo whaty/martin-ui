@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import {Dispatch} from 'redux';
 
 import {Card, Modal} from 'antd';
-import {WrappedFormUtils} from 'antd/es/form/Form';
+import { WrappedFormUtils } from '@ant-design/compatible/es/form/Form';
 import {ExpandIconProps, SorterResult} from 'antd/es/table';
 import {TableLocale} from 'antd/es/table/interface';
 import {PageHeaderWrapper} from '@ant-design/pro-layout';

@@ -1,10 +1,13 @@
-import {Button, Col, Divider, Form, Icon, Input, message, Tag, Tooltip} from 'antd';
+import { EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Col, Divider, Input, message, Tag, Tooltip } from 'antd';
 import React, {Component, RefObject} from 'react';
 
 import {Dispatch} from 'redux';
 import {connect} from 'dva';
 
-import {WrappedFormUtils} from 'antd/es/form/Form';
+import { WrappedFormUtils } from '@ant-design/compatible/es/form/Form';
 import {formatMessage, FormattedMessage} from 'umi-plugin-react/locale';
 
 import {TablePage} from '@/components/Page';
@@ -170,7 +173,7 @@ class Site extends Component<SiteProps, SiteState> {
             onSubmit={this.handleEdit}
             element={
               <a>
-                <Icon type="edit"/>
+                <EditOutlined />
                 <FormattedMessage id="component.common.text.edit"/>
               </a>
             }
@@ -392,7 +395,7 @@ class Site extends Component<SiteProps, SiteState> {
         title={formatMessage({id: 'app.site.add-new-site'})}
         onSubmit={this.handleAdd}
         element={
-          <Button type="primary" icon="plus">
+          <Button type="primary" icon={<PlusOutlined />}>
             <FormattedMessage id="component.common.text.add"/>
           </Button>
         }

@@ -1,10 +1,13 @@
-import {Button, Col, Divider, Dropdown, Form, Icon, Input, Menu, message, Checkbox, Row,} from 'antd';
+import { EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Col, Divider, Dropdown, Input, Menu, message, Checkbox, Row } from 'antd';
 import React, {Component, ReactNode, RefObject} from 'react';
 
 import {Dispatch} from 'redux';
 import {connect} from 'dva';
 
-import {WrappedFormUtils} from 'antd/es/form/Form';
+import { WrappedFormUtils } from '@ant-design/compatible/es/form/Form';
 import {formatMessage, FormattedMessage} from 'umi-plugin-react/locale';
 
 import {TablePage} from '@/components/Page';
@@ -48,7 +51,7 @@ class User extends Component<UserProps, UserState> {
           onSubmit={this.handleEdit}
           element={
             <a>
-              <Icon type="edit"/>
+              <EditOutlined />
               <FormattedMessage id="component.common.text.edit"/>
             </a>
           }
@@ -61,7 +64,7 @@ class User extends Component<UserProps, UserState> {
       </Menu.Item>
       <Menu.Item key="2">
         <a onClick={this.showRelationDrawer}>
-          <Icon type="edit"/>
+          <EditOutlined />
           <FormattedMessage id="app.user.add-user-role"/>
         </a>
         {/*<InlinePopconfirmBtn text={"分配角色1"} onConfirm={() => this.showRelationDrawer(record)}/>*/}
@@ -309,7 +312,7 @@ class User extends Component<UserProps, UserState> {
         title={formatMessage({id: 'app.user.add-new-user'})}
         onSubmit={this.handleAdd}
         element={
-          <Button type="primary" icon="plus">
+          <Button type="primary" icon={<PlusOutlined />}>
             <FormattedMessage id="component.common.text.add"/>
           </Button>
         }

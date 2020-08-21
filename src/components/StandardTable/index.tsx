@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Alert, Form, Table } from 'antd';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Alert, Table } from 'antd';
 import { ColumnProps, TableRowSelection, TableProps } from 'antd/es/table';
 
 import { FormattedMessage } from 'umi-plugin-react/locale';
-import { FormComponentProps } from 'antd/es/form';
-import { WrappedFormUtils } from 'antd/es/form/Form';
+import { FormComponentProps } from '@ant-design/compatible/es/form';
+import { WrappedFormUtils } from '@ant-design/compatible/es/form/Form';
 
 import EditableCell, { EditingRender } from './EditableCell';
 

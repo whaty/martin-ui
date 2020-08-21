@@ -1,6 +1,7 @@
 import React, { Component, ReactElement } from 'react';
 import { ModalProps } from 'antd/es/modal';
-import { Modal, Icon } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Modal } from 'antd';
 
 import RouteContext from '@ant-design/pro-layout/es/RouteContext';
 
@@ -110,23 +111,21 @@ class InlineModal extends Component<InlineModalProps, InlineModalState> {
     const { title, maxmin } = this.props;
     const { fullScreen } = this.state;
 
-    return (
-      <>
-        {title}
-        {maxmin && (
-          <button
-            type="button"
-            className="ant-modal-close"
-            style={{ right: 42 }}
-            onClick={this.toggleFullScreen}
-          >
-            <span className="ant-modal-close-x">
-              <Icon className="ant-modal-close-icon" type={fullScreen ? 'shrink' : 'arrows-alt'} />
-            </span>
-          </button>
-        )}
-      </>
-    );
+    return <>
+      {title}
+      {maxmin && (
+        <button
+          type="button"
+          className="ant-modal-close"
+          style={{ right: 42 }}
+          onClick={this.toggleFullScreen}
+        >
+          <span className="ant-modal-close-x">
+            <LegacyIcon className="ant-modal-close-icon" type={fullScreen ? 'shrink' : 'arrows-alt'} />
+          </span>
+        </button>
+      )}
+    </>;
   };
 
   render() {

@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import { Form, Icon } from 'antd';
+import { DownOutlined, UpOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
 
 import { isFunction } from 'lodash';
 import { renderFormItems } from '../utils';
@@ -91,7 +93,7 @@ class BaseForm extends Component {
           <div style={{ textAlign: 'center' }} onClick={this.toggleForm}>
             <a style={{ marginLeft: 8 }}>
               {(toggleFieldVisibility && '收起') || '更多'}
-              {(toggleFieldVisibility && <Icon type="up" />) || <Icon type="down" />}
+              {(toggleFieldVisibility && <UpOutlined />) || <DownOutlined />}
             </a>
           </div>
         )}
