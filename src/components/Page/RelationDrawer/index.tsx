@@ -1,6 +1,5 @@
-import {Drawer} from 'antd';
-import React, {Component} from 'react';
-
+import { Drawer } from 'antd';
+import React, { Component } from 'react';
 
 export interface RelationDrawerProps {
   visible?: boolean;
@@ -9,21 +8,18 @@ export interface RelationDrawerProps {
   title: string;
   width: number;
   closable: boolean;
+  destroyOnClose: boolean;
   relationRender: () => React.ReactNode;
-
 }
 
-interface RelationDrawerState {
-
-}
+interface RelationDrawerState {}
 
 export default class RelationDrawer extends Component<RelationDrawerProps, RelationDrawerState> {
   static defaultProps = {
     visible: false,
     childrenDrawer: false,
-    onClose: () => {
-    },
-    title: "",
+    onClose: () => {},
+    title: '',
     width: 520,
     closable: false,
   };
@@ -33,7 +29,7 @@ export default class RelationDrawer extends Component<RelationDrawerProps, Relat
   }
 
   render() {
-    const {title, width, closable, onClose, visible, relationRender} = this.props;
+    const { title, width, closable, onClose, visible, destroyOnClose, relationRender } = this.props;
     return (
       <>
         <Drawer
@@ -42,6 +38,7 @@ export default class RelationDrawer extends Component<RelationDrawerProps, Relat
           closable={closable}
           onClose={onClose}
           visible={visible}
+          destroyOnClose={destroyOnClose}
         >
           {relationRender && relationRender()}
         </Drawer>

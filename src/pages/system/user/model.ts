@@ -1,23 +1,29 @@
-import {AnyAction, Reducer} from 'redux';
-import {EffectsCommandMap} from 'dva';
+import { AnyAction, Reducer } from 'redux';
+import { EffectsCommandMap } from 'dva';
 
-import {TableListItem} from '@/components/StandardTable';
-import {TableListData} from '@/components/Page/TablePage';
+import { TableListItem } from '@/components/StandardTable';
+import { TableListData } from '@/components/Page/TablePage';
 
 import {
   addUser,
+  addUserRole,
   deleteBatchUsers,
+  deleteUser,
+  deleteUserRole,
   editUser,
-  query as queryUsers,
-  removeUsers,
-  queryAllRoles,
-  querySelectRoles
+  getAllRoles,
+  getSelectRoles,
+  pageUsers,
 } from './service';
-import {queryCurrent} from "@/services/user";
+import { queryCurrent } from '@/services/user';
+
+export interface UserRoleItem {
+  roleId: number;
+}
 
 export interface UserListItem extends TableListItem {
   id: number;
-  username: string
+  username: string;
   pwd: string;
   salt: string;
   age: string;
@@ -40,14 +46,16 @@ export interface UserModelType {
   namespace: string;
   state: UserStateType;
   effects: {
-    fetch: Effect;
-    create: Effect;
-    remove: Effect;
-    removeBatch: Effect;
-    modify: Effect;
-    fetchCurrent: Effect;
-    fetchAllRoles: Effect;
-    fetchSelectRoles: Effect;
+    page: Effect;
+    add: Effect;
+    delete: Effect;
+    deleteBatch: Effect;
+    update: Effect;
+    getCurrent: Effect;
+    getAllRoles: Effect;
+    getSelectRoles: Effect;
+    addUserRole: Effect;
+    deleteUserRole: Effect;
   };
   reducers: {
     save: Reducer<UserStateType>;
@@ -57,11 +65,8 @@ export interface UserModelType {
     saveCurrentUser: Reducer<UserStateType>;
     saveAllRoles: Reducer<UserStateType>;
     saveSelectRoles: Reducer<UserStateType>;
-
-
   };
 }
-
 
 // @ts-ignore
 const UserModel: UserModelType = {
@@ -77,8 +82,8 @@ const UserModel: UserModelType = {
   },
 
   effects: {
-    * fetch({payload}, {call, put}) {
-      const response = yield call(queryUsers, payload);
+    *page({ payload }, { call, put }) {
+      const response = yield call(pageUsers, payload);
       if (response) {
         yield put({
           type: 'save',
@@ -86,24 +91,24 @@ const UserModel: UserModelType = {
         });
       }
     },
-    * create({payload}, {call, put}) {
+    *add({ payload }, { call }) {
       const response = yield call(addUser, payload);
       return response;
     },
-    * modify({payload}, {call, put}) {
+    *update({ payload }, { call }) {
       const response = yield call(editUser, payload);
       return response;
     },
-    * remove({payload}, {call, put}) {
-      const response = yield call(removeUsers, payload);
+    *delete({ payload }, { call }) {
+      const response = yield call(deleteUser, payload);
       return response;
     },
-    * removeBatch({payload}, {call, put}) {
+    *deleteBatch({ payload }, { call }) {
       const response = yield call(deleteBatchUsers, payload);
       return response;
     },
 
-    * fetchCurrent(_, {call, put}) {
+    *getCurrent(_, { call, put }) {
       const response = yield call(queryCurrent);
       yield put({
         type: 'saveCurrentUser',
@@ -111,22 +116,25 @@ const UserModel: UserModelType = {
       });
     },
 
-    * fetchAllRoles(_, {call, put}) {
-      const response = yield call(queryAllRoles);
-      if (response) {
-        yield put({
-          type: 'saveAllRoles',
-          payload: response.data,
-        });
-      }
+    *getAllRoles({ payload }, { call }) {
+      const response = yield call(getAllRoles, payload);
+      return response;
     },
 
-    * fetchSelectRoles(_, {call, put}) {
-      const response = yield call(querySelectRoles);
+    *getSelectRoles({ payload }, { call, put }) {
+      const response = yield call(getSelectRoles, payload);
       yield put({
         type: 'saveSelectRoles',
         payload: response.data,
       });
+    },
+
+    *addUserRole({ payload }, { call }) {
+      yield call(addUserRole, payload);
+    },
+
+    *deleteUserRole({ payload }, { call }) {
+      yield call(deleteUserRole, payload);
     },
   },
 
@@ -141,7 +149,7 @@ const UserModel: UserModelType = {
             total: action.payload.total,
             size: action.payload.size,
             current: action.payload.current,
-          }
+          },
         },
       };
     },
@@ -154,7 +162,6 @@ const UserModel: UserModelType = {
     },
     // @ts-ignore
     saveAllRoles(state, action) {
-      console.log(156, action)
       return {
         ...state,
         allRoles: action.payload || [],
@@ -167,7 +174,6 @@ const UserModel: UserModelType = {
         selectRoles: action.payload || [],
       };
     },
-
   },
 };
 

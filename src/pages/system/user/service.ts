@@ -1,9 +1,9 @@
 import request from '@/utils/request';
 
-import {TableListParams} from '@/components/Page/TablePage';
-import {UserListItem} from '@/pages/system/user/model';
+import { TableListParams } from '@/components/Page/TablePage';
+import { UserListItem, UserRoleItem } from '@/pages/system/user/model';
 
-export async function query(params: TableListParams) {
+export async function pageUsers(params: TableListParams) {
   return request('/syst/user/page', {
     method: 'POST',
     data: {
@@ -12,7 +12,7 @@ export async function query(params: TableListParams) {
   });
 }
 
-export async function removeUsers(params: UserListItem) {
+export async function deleteUser(params: UserListItem) {
   return request('/syst/user/delete', {
     method: 'POST',
     data: {
@@ -47,7 +47,7 @@ export async function editUser(params: UserListItem) {
   });
 }
 
-export async function queryAllRoles(params: UserListItem) {
+export async function getAllRoles(params: UserListItem) {
   return request('/syst/user/getAllRoles', {
     method: 'POST',
     data: {
@@ -56,7 +56,7 @@ export async function queryAllRoles(params: UserListItem) {
   });
 }
 
-export async function querySelectRoles(params: UserListItem) {
+export async function getSelectRoles(params: UserListItem) {
   return request('/syst/user/getSelectRoles', {
     method: 'POST',
     data: {
@@ -65,3 +65,20 @@ export async function querySelectRoles(params: UserListItem) {
   });
 }
 
+export async function addUserRole(params: UserRoleItem) {
+  return request('/syst/user/addUserRole', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+export async function deleteUserRole(params: UserRoleItem) {
+  return request('/syst/user/deleteUserRole', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
