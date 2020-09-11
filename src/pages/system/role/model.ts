@@ -4,21 +4,29 @@ import {EffectsCommandMap} from 'dva';
 import {TableListItem} from '@/components/StandardTable';
 import {TableListData} from '@/components/Page/TablePage';
 
-import {addRole, deleteBatchRoles, editRole, query as queryRoles, removeRoles} from './service';
+import {
+  addRole,
+  deleteBatchRoles,
+  editRole,
+  pageRoles,
+  deleteRole,
+  getAllMenuByRole,
+  saveCheckedMenus, getOperationByCheckedMenus, saveCheckedOperations
+} from './service';
 
 export interface RoleListItem extends TableListItem {
-    id: number;
-    roleName: string;
-    roleCode: string;
-    roleDesc: string;
-    dsType: string;
-    dsScope: string;
-    tenantId: string;
-    delFlag: string;
-    createTime: string;
-    updateTime: string;
-    creator: string;
-    updater: string;
+  id: number;
+  roleName: string;
+  roleCode: string;
+  roleDesc: string;
+  dsType: string;
+  dsScope: string;
+  tenantId: string;
+  delFlag: string;
+  createTime: string;
+  updateTime: string;
+  creator: string;
+  updater: string;
 }
 
 export interface RoleStateType {
@@ -34,11 +42,15 @@ export interface RoleModelType {
   namespace: string;
   state: RoleStateType;
   effects: {
-    fetch: Effect;
-    create: Effect;
-    remove: Effect;
-    removeBatch: Effect;
-    modify: Effect;
+    page: Effect;
+    add: Effect;
+    delete: Effect;
+    deleteBatch: Effect;
+    update: Effect;
+    getAllMenuByRole: Effect;
+    saveCheckedMenus: Effect;
+    getOperationByCheckedMenus: Effect;
+    saveCheckedOperations: Effect;
   };
   reducers: {
     save: Reducer<RoleStateType>;
@@ -58,8 +70,8 @@ const RoleModel: RoleModelType = {
   },
 
   effects: {
-    * fetch({payload}, {call, put}) {
-      const response = yield call(queryRoles, payload);
+    * page({payload}, {call, put}) {
+      const response = yield call(pageRoles, payload);
       if (response) {
         yield put({
           type: 'save',
@@ -67,20 +79,36 @@ const RoleModel: RoleModelType = {
         });
       }
     },
-    * create({payload}, {call, put}) {
+    * add({payload}, {call}) {
       const response = yield call(addRole, payload);
       return response;
     },
-    * modify({payload}, {call, put}) {
+    * update({payload}, {call}) {
       const response = yield call(editRole, payload);
       return response;
     },
-    * remove({payload}, {call, put}) {
-      const response = yield call(removeRoles, payload);
+    * delete({payload}, {call}) {
+      const response = yield call(deleteRole, payload);
       return response;
     },
-    * removeBatch({payload}, {call, put}) {
+    * deleteBatch({payload}, {call}) {
       const response = yield call(deleteBatchRoles, payload);
+      return response;
+    },
+    * getAllMenuByRole({payload}, {call}) {
+      const response = yield call(getAllMenuByRole, payload);
+      return response;
+    },
+    * saveCheckedMenus({payload}, {call}) {
+      const response = yield call(saveCheckedMenus, payload);
+      return response;
+    },
+    * getOperationByCheckedMenus({payload}, {call}) {
+      const response = yield call(getOperationByCheckedMenus, payload);
+      return response;
+    },
+    * saveCheckedOperations({payload}, {call}) {
+      const response = yield call(saveCheckedOperations, payload);
       return response;
     },
 

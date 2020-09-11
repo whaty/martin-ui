@@ -11,11 +11,13 @@ export default {
   'app.common.bale.more': '更多',
   'app.common.validation.not-empty': '必填项不能为空',
 
-  'app.role':'系统角色管理',
+  'app.role': '系统角色管理',
 
   'app.role.edit-the-role': '编辑系统角色',
   'app.role.add-new-role': '新增系统角色',
+  'app.role.add-role-privilege': '授权',
 
+  'app.role.label.current-role': '当前角色',
   'app.role.label.roleName': '角色名称',
   'app.role.label.roleCode': '角色编码',
   'app.role.label.roleDesc': '角色描述',

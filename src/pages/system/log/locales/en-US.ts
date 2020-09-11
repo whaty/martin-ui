@@ -1,0 +1,37 @@
+export default {
+  'app.common.err.record.exist': 'The record already exists',
+  'app.common.label.operation': 'Operation',
+  'app.common.label.memo': 'Remarks',
+  'app.common.label.columns-display-settings': 'Column Toggle',
+  'app.common.label.select-all': 'Check All',
+  'app.common.label.select-reversely': 'Inverse',
+  'app.common.label.open-in-new-window': 'Open in a new window',
+  'app.common.label.yes': 'Yes',
+  'app.common.label.no': 'No',
+  'app.common.bale.more': 'More',
+  'app.common.validation.not-empty': 'Required items cannot be empty',
+
+    'app.log':'系统日志管理',
+
+  'app.log.edit-the-log': '编辑系统日志',
+  'app.log.add-new-log': '新增系统日志',
+
+  'app.log.label.type': '日志类型',
+  'app.log.label.title': '日志标题',
+  'app.log.label.serviceId': '服务ID',
+  'app.log.label.createBy': '创建者',
+  'app.log.label.remoteAddr': '操作IP地址',
+  'app.log.label.userAgent': '用户代理',
+  'app.log.label.requestUri': '请求URI',
+  'app.log.label.method': '操作方式',
+  'app.log.label.params': '操作提交的数据',
+  'app.log.label.time': '执行时间',
+  'app.log.label.exception': '异常信息',
+  'app.log.label.tenantId': '所属租户',
+  'app.log.label.delFlag': '删除标识（0-正常,1-删除）',
+  'app.log.label.createTime': '创建时间',
+  'app.log.label.updateTime': '更新时间',
+  'app.log.label.creator': '创建人',
+  'app.log.label.updater': '修改人',
+
+};

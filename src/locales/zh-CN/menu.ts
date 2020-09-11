@@ -53,4 +53,11 @@ export default {
   'menu.system': '系统管理',
   'menu.system.role': '角色管理',
   'menu.system.user': '用户管理',
+  'menu.system.dict': '字典管理',
+  'menu.system.config': '配置管理',
+  'menu.system.element': '页面元素管理',
+  'menu.system.file': '文件管理',
+  'menu.system.log': '日志管理',
+  'menu.system.menu': '菜单管理',
+  'menu.system.operation': '按钮管理',
 };

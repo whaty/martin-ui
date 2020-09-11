@@ -68,6 +68,7 @@ interface TablePageProps<T extends TableListItem> {
   batchDelete: boolean;
   handleSelectRows?: (rows: T[]) => void;
   onDelete?: (rows: T[]) => void;
+  deleteBatchAuth: string;
   searchFormRender?: (form: WrappedFormUtils) => React.ReactNode;
   operatorRender?: (() => React.ReactNode) | ComplexOperatorRender;
   expandedRowRender?: (record: T) => React.ReactNode;
@@ -154,7 +155,7 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
       if (standardTableDom) {
         // @ts-ignore
         const el = standardTableDom.querySelector('.ant-table-placeholder');
-
+        console.log(158, el);
         if (el) {
           // TODO 尺寸可能得跟着表格尺寸进行调整
           el.style.height = `${this.state.tableMaxHeight + 48}px`;
@@ -183,13 +184,15 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
       if (standardTableDom) {
         // @ts-ignore
         const el = standardTableDom.querySelector('.ant-table-tbody');
+        let parentElement = standardTableDom.parentNode;
+        console.log(189,parentElement);
         if (el) {
           if (this.isMobile === true) {
             this.setState({
               tableMaxHeight: undefined,
             });
           } else {
-            // TODO 尺寸可能得跟着表格尺寸进行调整
+            // TODO 尺寸可能得跟着表格尺寸进行调整ant-layout-sider
             let height: number | undefined =
               window.innerHeight - el.getBoundingClientRect().top - 96;
             height = height > 50 ? height : 50;
@@ -248,7 +251,13 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
    * @param e
    */
   onSearch = (fieldsValue: any) => {
-    // TODO 添加格式化
+    console.log(252, fieldsValue);
+    if (fieldsValue.createTime) {
+      fieldsValue.createTime = fieldsValue.createTime.format("YYYY-MM-DDTHH:mm:ss");
+    }
+    if (fieldsValue.updateTime) {
+      fieldsValue.updateTime = fieldsValue.updateTime.format("YYYY-MM-DDTHH:mm:ss");
+    }
     const values = {
       ...fieldsValue,
     };
@@ -331,8 +340,6 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
         type: action,
         payload: params,
         // @ts-ignore
-      }).catch(err => {
-        console.error(err);
       });
     }
   }
@@ -391,7 +398,7 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
   }
 
   renderOperatorPanel() {
-    const {operatorRender, columns, batchDelete, searchFormRender} = this.props;
+    const {operatorRender, columns, batchDelete, searchFormRender, deleteBatchAuth} = this.props;
     const {selectedRows} = this.state;
 
     return (
@@ -401,6 +408,7 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
           selectedRows={selectedRows}
           batchDelete={batchDelete}
           onBatchDelete={this.onBatchDelete}
+          deleteBatchAuth={deleteBatchAuth}
           onSearch={this.onSearch}
           doSearch={this.doSearch}
           onSearchReset={this.onSearchReset}
@@ -426,7 +434,6 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
 
     const {scroll = {}, bodyStyle, ...rest} = tableOptions;
     const tableOpts = {
-      size: 'small',
       bordered: false,
       ...rest,
       scroll: {
@@ -441,6 +448,7 @@ class TablePage<T extends TableListItem> extends Component<TablePageProps<T>, Ta
       },
       expandIcon: this.expandIcon,
     };
+    console.log(449, tableMaxHeight);
     return (
       <StandardTable
         wrappedComponentRef={this.tableRef}

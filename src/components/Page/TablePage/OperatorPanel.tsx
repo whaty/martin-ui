@@ -9,6 +9,7 @@ import styles from '@/components/Page/TablePage/index.less';
 import {WrappedFormUtils} from "antd/es/form/Form";
 import {FilterOutlined} from "@ant-design/icons/lib";
 import SearchPanel from "@/components/Page/TablePage/SearchPanel";
+import Authorized from "@/utils/Authorized";
 
 export interface ComplexOperatorRender {
   left: () => React.ReactNode;
@@ -23,6 +24,7 @@ interface OperatorPanelProps {
   selectedRows: any[];
   batchDelete: boolean;
   onBatchDelete: React.MouseEventHandler<HTMLElement>;
+  deleteBatchAuth: string;
   onSearch: React.MouseEventHandler<HTMLElement>;
   doSearch: React.MouseEventHandler<HTMLElement>;
   onSearchReset: React.MouseEventHandler<HTMLElement>;
@@ -166,11 +168,10 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
       {
         searchFormValues: {},
       },
-
     );
   };
 
-  renderFilterFooter(){
+  renderFilterFooter() {
     return (
       <>
         <Alert
@@ -185,7 +186,7 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
 
 
   renderRightDefault() {
-    const {searchFormRender,onSearchReset,onSearch} = this.props;
+    const {searchFormRender, onSearchReset, onSearch} = this.props;
     return (
       <>
         <Tooltip title={<FormattedMessage id="component.common.text.refresh"/>}>
@@ -260,7 +261,7 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
   }
 
   render() {
-    const {selectedRows, batchDelete, operatorRender, onBatchDelete} = this.props;
+    const {selectedRows, batchDelete, operatorRender, onBatchDelete, deleteBatchAuth} = this.props;
     return (
       <div className={styles.tableListOperator}>
         <div>
@@ -268,9 +269,11 @@ class OperatorPanel extends Component<OperatorPanelProps, OperatorPanelState> {
           // @ts-ignore
           (isFunction(operatorRender.left) && operatorRender.left())}
           {selectedRows.length > 0 && batchDelete && (
-            <Button onClick={onBatchDelete} icon="delete" type="danger">
-              <FormattedMessage id="component.common.text.batch-delete"/>
-            </Button>
+            <Authorized authority={deleteBatchAuth} noMatch={''}>
+              <Button onClick={onBatchDelete} icon="delete" type="danger">
+                <FormattedMessage id="component.common.text.batch-delete"/>
+              </Button>
+            </Authorized>
           )}
         </div>
         <div className={styles.tableListOperatorRight}>

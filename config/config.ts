@@ -1,13 +1,13 @@
-import { IConfig, IPlugin } from 'umi-types';
+import {IConfig, IPlugin} from 'umi-types';
 import defaultSettings from './defaultSettings'; // https://umijs.org/config/
 
 import slash from 'slash2';
 import themePluginConfig from './themePluginConfig';
 
-const { pwa } = defaultSettings; // preview.pro.ant.design only do not use in your production ;
+const {pwa} = defaultSettings; // preview.pro.ant.design only do not use in your production ;
 // preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
 
-const { ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION } = process.env;
+const {ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION} = process.env;
 //下面选项控制是否渲染多色主题，默认不会渲染，因为渲染主题会导致加载速度变慢
 const isAntDesignProPreview = ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION === 'site';
 const plugins: IPlugin[] = [
@@ -33,11 +33,11 @@ const plugins: IPlugin[] = [
       },
       pwa: pwa
         ? {
-            workboxPluginMode: 'InjectManifest',
-            workboxOptions: {
-              importWorkboxFrom: 'local',
-            },
-          }
+          workboxPluginMode: 'InjectManifest',
+          workboxOptions: {
+            importWorkboxFrom: 'local',
+          },
+        }
         : false, // default close dll, because issue https://github.com/ant-design/ant-design-pro/issues/4665
       // dll features https://webpack.js.org/plugins/dll-plugin/
       // dll: {
@@ -140,6 +140,9 @@ export default {
                   path: '/dashboard/workplace',
                   component: './dashboard/workplace',
                 },
+                {
+                  component: '404',
+                },
               ],
             },
             {
@@ -164,6 +167,9 @@ export default {
                   icon: 'smile',
                   path: '/form/advanced-form',
                   component: './form/advanced-form',
+                },
+                {
+                  component: '404',
                 },
               ],
             },
@@ -199,6 +205,9 @@ export default {
                       path: '/list/search/applications',
                       component: './list/search/applications',
                     },
+                    {
+                      component: '404',
+                    },
                   ],
                 },
                 {
@@ -219,6 +228,9 @@ export default {
                   path: '/list/card-list',
                   component: './list/card-list',
                 },
+                {
+                  component: '404',
+                },
               ],
             },
             {
@@ -238,6 +250,9 @@ export default {
                   path: '/profile/advanced',
                   component: './profile/advanced',
                 },
+                {
+                  component: '404',
+                },
               ],
             },
             {
@@ -256,6 +271,9 @@ export default {
                   icon: 'smile',
                   path: '/result/fail',
                   component: './result/fail',
+                },
+                {
+                  component: '404',
                 },
               ],
             },
@@ -282,6 +300,9 @@ export default {
                   path: '/exception/500',
                   component: './exception/500',
                 },
+                {
+                  component: '404',
+                },
               ],
             },
             {
@@ -295,6 +316,9 @@ export default {
                   path: '/site/site-config',
                   component: './site/site-config',
                 },
+                {
+                  component: '404',
+                },
               ],
             },
             {
@@ -307,12 +331,49 @@ export default {
                   icon: 'smile',
                   path: '/system/user',
                   component: './system/user',
-                },
-                {
+                }, {
                   name: 'role',
                   icon: 'smile',
                   path: '/system/role',
                   component: './system/role',
+                }, {
+                  name: 'dict',
+                  icon: 'smile',
+                  path: '/system/dict',
+                  component: './system/dict',
+                }, {
+                  name: 'config',
+                  icon: 'smile',
+                  path: '/system/config',
+                  component: './system/config',
+                }, {
+                  name: 'element',
+                  icon: 'smile',
+                  path: '/system/element',
+                  component: './system/element',
+                }, {
+                  name: 'file',
+                  icon: 'smile',
+                  path: '/system/file',
+                  component: './system/file',
+                }, {
+                  name: 'log',
+                  icon: 'smile',
+                  path: '/system/log',
+                  component: './system/log',
+                }, {
+                  name: 'menu',
+                  icon: 'smile',
+                  path: '/system/menu',
+                  component: './system/menu',
+                }, {
+                  name: 'operation',
+                  icon: 'smile',
+                  path: '/system/operation',
+                  component: './system/operation',
+                },
+                {
+                  component: '404',
                 },
               ],
             },
@@ -332,6 +393,9 @@ export default {
                   icon: 'smile',
                   path: '/account/settings',
                   component: './account/settings',
+                },
+                {
+                  component: '404',
                 },
               ],
             },
@@ -358,6 +422,9 @@ export default {
                   path: '/editor/koni',
                   component: './editor/koni',
                 },
+                {
+                  component: '404',
+                },
               ],
             },
             {
@@ -369,7 +436,13 @@ export default {
             },
           ],
         },
+        {
+          component: '404',
+        },
       ],
+    },
+    {
+      component: '404',
     },
   ],
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
